@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles'
 import type { VerticalMenuContextProps } from '@menu/components/vertical-menu/Menu'
 
 // Component Imports
-import HorizontalNav, { Menu, MenuItem } from '@menu/horizontal-menu'
+import HorizontalNav, { Menu, MenuItem, SubMenu } from '@menu/horizontal-menu'
 import VerticalNavContent from './VerticalNavContent'
 
 // Hook Imports
@@ -21,6 +21,8 @@ import menuRootStyles from '@core/styles/horizontal/menuRootStyles'
 import verticalNavigationCustomStyles from '@core/styles/vertical/navigationCustomStyles'
 import verticalMenuItemStyles from '@core/styles/vertical/menuItemStyles'
 import verticalMenuSectionStyles from '@core/styles/vertical/menuSectionStyles'
+import { getDictionary } from '@/utils/getDictionary'
+import { useParams } from 'next/navigation'
 
 type RenderExpandIconProps = {
   level?: number
@@ -43,13 +45,17 @@ const RenderVerticalExpandIcon = ({ open, transitionDuration }: RenderVerticalEx
   </StyledVerticalNavExpandIcon>
 )
 
-const HorizontalMenu = () => {
+const HorizontalMenu = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof getDictionary>> }) => {
   // Hooks
   const verticalNavOptions = useVerticalNav()
   const theme = useTheme()
+  const params = useParams()
+
 
   // Vars
   const { transitionDuration } = verticalNavOptions
+  const { lang: locale } = params
+
 
   return (
     <HorizontalNav
@@ -78,13 +84,20 @@ const HorizontalMenu = () => {
           menuSectionStyles: verticalMenuSectionStyles(verticalNavOptions, theme)
         }}
       >
-        <MenuItem href='/' icon={<i className='tabler-smart-home' />}>
-          Home
+        <MenuItem href={`/${locale}/home`} icon={<i className='tabler-smart-home' />}>
+          {dictionary['navigation'].home}
         </MenuItem>
-        <MenuItem href='/about' icon={<i className='tabler-info-circle' />}>
-          About
+        <MenuItem href={`/${locale}/about`} icon={<i className='tabler-info-circle' />}>
+          {dictionary['navigation'].about}
         </MenuItem>
+
+        <SubMenu label={dictionary['navigation'].user} icon={<i className='tabler-user' />}>
+          <MenuItem href={`/${locale}/apps/user`}>{dictionary['navigation'].list}</MenuItem>
+          <MenuItem href={`/${locale}/apps/user/view`}>{dictionary['navigation'].view}</MenuItem>
+        </SubMenu>
       </Menu>
+
+
       {/* <Menu
         rootStyles={menuRootStyles(theme)}
         renderExpandIcon={({ level }) => <RenderExpandIcon level={level} />}

@@ -129,11 +129,12 @@ const AddUserDrawer = (props: Props) => {
             rules={{ required: true }}
             render={({ field }) => (
               <CustomTextField
+                defaultValue={state?.data?.fullName}
                 {...field}
                 fullWidth
                 label='Full Name'
                 placeholder='John Doe'
-                {...(errors.fullName && { error: true, helperText: 'This field is required.' })}
+                {...(state?.errors?.fullName && { error: true, helperText: state?.errors?.fullName })}
               />
             )}
           />
@@ -143,11 +144,12 @@ const AddUserDrawer = (props: Props) => {
             rules={{ required: true }}
             render={({ field }) => (
               <CustomTextField
+                defaultValue={state?.data?.username}
                 {...field}
                 fullWidth
                 label='Username'
                 placeholder='johndoe'
-                {...(errors.username && { error: true, helperText: 'This field is required.' })}
+                {...(state?.errors?.username && { error: true, helperText: state?.errors?.username })}
               />
             )}
           />
@@ -157,11 +159,12 @@ const AddUserDrawer = (props: Props) => {
             rules={{ required: true }}
             render={({ field }) => (
               <CustomTextField
+                defaultValue={state?.data?.password}
                 {...field}
                 fullWidth
                 label='Password'
                 placeholder='input password'
-                {...(errors.username && { error: true, helperText: 'This field is required.' })}
+                {...(state?.errors?.password && { error: true, helperText: state?.errors?.password })}
               />
             )}
           />
@@ -171,12 +174,13 @@ const AddUserDrawer = (props: Props) => {
             rules={{ required: true }}
             render={({ field }) => (
               <CustomTextField
+                defaultValue={state?.data?.email}
                 {...field}
                 fullWidth
                 type='email'
                 label='Email'
                 placeholder='johndoe@gmail.com'
-                {...(errors.email && { error: true, helperText: 'This field is required.' })}
+                {...(state?.errors?.email && { error: true, helperText: state?.errors?.email })}
               />
             )}
           />
@@ -186,12 +190,13 @@ const AddUserDrawer = (props: Props) => {
             rules={{ required: true }}
             render={({ field }) => (
               <CustomTextField
+                defaultValue={state?.data?.role}
                 select
                 fullWidth
                 id='select-role'
                 label='Select Role'
                 {...field}
-                {...(errors.role && { error: true, helperText: 'This field is required.' })}
+                {...(state?.errors?.role && { error: true, helperText: state?.errors?.role })}
               >
                 <MenuItem value='admin'>Admin</MenuItem>
                 <MenuItem value='author'>Author</MenuItem>
@@ -208,12 +213,13 @@ const AddUserDrawer = (props: Props) => {
             rules={{ required: true }}
             render={({ field }) => (
               <CustomTextField
+                defaultValue={state?.data?.status}
                 select
                 fullWidth
                 id='select-status'
                 label='Select Status'
                 {...field}
-                {...(errors.status && { error: true, helperText: 'This field is required.' })}
+                {...(state?.errors?.status && { error: true, helperText: state?.errors?.status })}
               >
                 <MenuItem value='pending'>Pending</MenuItem>
                 <MenuItem value='active'>Active</MenuItem>
@@ -229,10 +235,15 @@ const AddUserDrawer = (props: Props) => {
             fullWidth
             placeholder='(397) 294-5153'
             value={formData.contact}
+            defaultValue={state?.data?.contact}
             onChange={e => setFormData({ ...formData, contact: e.target.value })}
+            {...(state?.errors?.contact && { error: true, helperText: state?.errors?.contact })}
+
           />
+
+
           <div className='flex items-center gap-4'>
-            <Button variant='contained' type='submit'>
+            <Button variant='contained' type='submit' disabled={pending}>
               Submit
             </Button>
             <Button variant='tonal' color='error' type='reset' onClick={() => handleReset()}>
