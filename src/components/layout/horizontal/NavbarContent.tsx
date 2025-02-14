@@ -14,6 +14,7 @@ import useHorizontalNav from '@menu/hooks/useHorizontalNav'
 
 // Util Imports
 import { horizontalLayoutClasses } from '@layouts/utils/layoutClasses'
+import LanguageDropdown from '../shared/LanguageDropdown'
 
 const NavbarContent = () => {
   // Hooks
@@ -30,6 +31,7 @@ const NavbarContent = () => {
       </div>
       <div className='flex items-center'>
         <ModeDropdown />
+        <LanguageDropdown />
         <UserDropdown />
       </div>
     </div>

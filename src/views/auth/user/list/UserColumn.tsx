@@ -25,17 +25,17 @@ type UsersTypeWithAction = UsersType & {
 }
 
 const userRoleObj = {
-  admin: { icon: 'tabler-crown', color: 'error' },
-  author: { icon: 'tabler-device-desktop', color: 'warning' },
-  editor: { icon: 'tabler-edit', color: 'info' },
-  maintainer: { icon: 'tabler-chart-pie', color: 'success' },
-  subscriber: { icon: 'tabler-user', color: 'primary' }
+  STAFF: { icon: 'tabler-crown', color: 'error' },
+  // author: { icon: 'tabler-device-desktop', color: 'warning' },
+  // editor: { icon: 'tabler-edit', color: 'info' },
+  MANAGER: { icon: 'tabler-chart-pie', color: 'success' },
+  FINANCE: { icon: 'tabler-user', color: 'primary' }
 }
 
 const userStatusObj = {
-  active: 'success',
-  pending: 'warning',
-  inactive: 'secondary'
+  ACTIVE: 'success',
+  PENDING: 'warning',
+  INACTIVE: 'secondary'
 }
 
 const getAvatar = (params: { avatar?: string; fullName: string }) => {
