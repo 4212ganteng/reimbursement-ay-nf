@@ -23,7 +23,7 @@ type Props = {
   open: boolean
   handleClose: () => void
   userData?: UsersType[]
-  onDataSubmit: (data: ProductForm) => Promise<void>
+  onDataSubmit: (data) => Promise<void>
 }
 
 type FormValidateType = {
@@ -55,7 +55,7 @@ const AddUserDrawer = (props: Props) => {
   console.log(state)
 
   // Props
-  const { open, handleClose, userData, setData } = props
+  const { open, handleClose, userData, onDataSubmit } = props
 
   // States
   const [formData, setFormData] = useState<FormNonValidateType>(initialData)
@@ -98,6 +98,12 @@ const AddUserDrawer = (props: Props) => {
   //   setFormData(initialData)
   //   resetForm({ fullName: '', username: '', email: '', role: '', password: '', status: '' })
   // }
+
+  const roleOption = [
+    'MANAGER',
+    'STAFF',
+    'FINANCE'
+  ]
 
   const handleReset = () => {
     handleClose()
@@ -160,6 +166,7 @@ const AddUserDrawer = (props: Props) => {
             render={({ field }) => (
               <CustomTextField
                 defaultValue={state?.data?.password}
+                type='password'
                 {...field}
                 fullWidth
                 label='Password'
@@ -198,11 +205,12 @@ const AddUserDrawer = (props: Props) => {
                 {...field}
                 {...(state?.errors?.role && { error: true, helperText: state?.errors?.role })}
               >
-                <MenuItem value='admin'>Admin</MenuItem>
-                <MenuItem value='author'>Author</MenuItem>
-                <MenuItem value='editor'>Editor</MenuItem>
-                <MenuItem value='maintainer'>Maintainer</MenuItem>
-                <MenuItem value='subscriber'>Subscriber</MenuItem>
+
+                {roleOption.map((option, index) => (
+                  <MenuItem key={index} value={option}>{option}</MenuItem>
+
+                ))}
+
               </CustomTextField>
             )}
           />
@@ -221,9 +229,9 @@ const AddUserDrawer = (props: Props) => {
                 {...field}
                 {...(state?.errors?.status && { error: true, helperText: state?.errors?.status })}
               >
-                <MenuItem value='pending'>Pending</MenuItem>
-                <MenuItem value='active'>Active</MenuItem>
-                <MenuItem value='inactive'>Inactive</MenuItem>
+                <MenuItem value='ACTIVE'>Active</MenuItem>
+                <MenuItem value='PENDING'>Pending</MenuItem>
+                <MenuItem value='INACTIVE'>Inactive</MenuItem>
               </CustomTextField>
             )}
           />
@@ -237,7 +245,7 @@ const AddUserDrawer = (props: Props) => {
             value={formData.contact}
             defaultValue={state?.data?.contact}
             onChange={e => setFormData({ ...formData, contact: e.target.value })}
-            {...(state?.errors?.contact && { error: true, helperText: state?.errors?.contact })}
+          // {...(state?.errors?.contact && { error: true, helperText: state?.errors?.contact })}
 
           />
 
