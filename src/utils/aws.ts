@@ -1,4 +1,4 @@
-import { S3Client, ListBucketsCommand, PutObjectCommand } from '@aws-sdk/client-s3'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 const s3client = new S3Client({
   region: 'apac',

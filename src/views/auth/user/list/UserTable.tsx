@@ -1,15 +1,16 @@
 // UserTable.tsx
 import { useState } from 'react'
 
-import { useReactTable, getCoreRowModel, getFilteredRowModel, getSortedRowModel, getPaginationRowModel, getFacetedRowModel, getFacetedUniqueValues, getFacetedMinMaxValues } from '@tanstack/react-table'
+import { getCoreRowModel, getFacetedMinMaxValues, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 
+
+import type { User } from '@prisma/client'
 
 import type { Locale } from '@/configs/i18n'
-import { userColumns } from './UserColumn'
 import { fuzzyFilter } from '@/utils/FuzyFilter'
-import type { UsersType } from '@/types/userTypes'
+import { userColumns } from './UserColumn'
 
-type UsersTypeWithAction = UsersType & {
+type UsersTypeWithAction = User & {
   action?: string
 }
 

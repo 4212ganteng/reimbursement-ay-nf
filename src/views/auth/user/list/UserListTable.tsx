@@ -1,7 +1,5 @@
 "use client"
 
-
-
 // UserListTable.tsx
 import { useState } from 'react'
 
@@ -17,27 +15,39 @@ import {
 import classnames from 'classnames'
 
 
+import { toast } from 'react-toastify'
+
+import type { User } from '@prisma/client'
+
 import CustomTextField from '@core/components/mui/TextField'
 import tableStyles from '@core/styles/table.module.css'
 
 // import { TableFilters } from './TableFilters'
-import { useUserTable } from './UserTable'
-import type { UsersType } from '@/types/userTypes'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import type { Locale } from '@/configs/i18n'
 import { DebouncedInput } from '@/utils/DebouncedInput'
 import AddUserDrawer from './AddUserDrawer'
+import { useUserTable } from './UserTable'
 
-type UsersTypeWithAction = UsersType & {
+type UsersTypeWithAction = User & {
   action?: string
 }
 
 const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => {
   const [addUserOpen, setAddUserOpen] = useState(false)
-  const [data, setData] = useState(tableData || [])
-  const [filteredData, setFilteredData] = useState(data)
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [filteredData, setFilteredData] = useState(tableData || [])
   const { lang: locale } = useParams()
   const { table, globalFilter, setGlobalFilter } = useUserTable(filteredData, locale as Locale)
+
+  const handleAddUserSuccess = () => {
+    setAddUserOpen(false)
+
+    toast.success('User added successfully!')
+  }
+
+  // const [data, setData] = useState(tableData || [])
 
   return (
     <>
@@ -146,8 +156,7 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
       <AddUserDrawer
         open={addUserOpen}
         handleClose={() => setAddUserOpen(!addUserOpen)}
-        userData={data}
-        onDataSubmit={() => { }}
+        onDataSubmit={handleAddUserSuccess}
 
       />
     </>

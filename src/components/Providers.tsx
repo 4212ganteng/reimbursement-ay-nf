@@ -8,6 +8,7 @@ import ThemeProvider from '@components/theme'
 
 // Util Imports
 import { getMode, getSettingsFromCookie, getSystemMode } from '@core/utils/serverHelpers'
+import AppReactToastify from '@/libs/styles/AppReactToastify'
 
 type Props = ChildrenType & {
   direction: Direction
@@ -27,6 +28,7 @@ const Providers = async (props: Props) => {
       <SettingsProvider settingsCookie={settingsCookie} mode={mode}>
         <ThemeProvider direction={direction} systemMode={systemMode}>
           {children}
+          <AppReactToastify />
         </ThemeProvider>
       </SettingsProvider>
     </VerticalNavProvider>

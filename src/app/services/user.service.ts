@@ -34,5 +34,15 @@ export const UserService = {
     })
 
     return user
+  },
+
+  getAllUsers: async () => {
+    const data = await prisma.user.findMany({
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    return data
   }
 }

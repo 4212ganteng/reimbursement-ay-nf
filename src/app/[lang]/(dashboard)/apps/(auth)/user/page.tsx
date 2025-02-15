@@ -1,23 +1,18 @@
 // MUI Imports
-import Grid from '@mui/material/Grid2'
 
 // Type Imports
-import type { UsersType } from '@/types/userTypes'
+import { UserService } from '@/app/services/user.service'
 import UserListTable from '@/views/auth/user/list/UserListTable'
 
 // Component Imports
 
-const UserList = ({ userData }: { userData?: UsersType[] }) => {
-  return (
-    <Grid container spacing={6}>
-      <Grid size={{ xs: 12 }}>
-        {/* <UserListCards /> */}
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <UserListTable tableData={userData} />
-      </Grid>
-    </Grid>
-  )
+const UserListApp = async () => {
+
+  const data = await UserService.getAllUsers()
+
+  return <UserListTable tableData={data} />
+
+
 }
 
-export default UserList
+export default UserListApp
