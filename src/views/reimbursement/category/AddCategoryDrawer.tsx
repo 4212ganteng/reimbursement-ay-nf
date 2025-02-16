@@ -1,18 +1,16 @@
 // React Imports
-import { useState, useRef } from 'react'
-import type { ChangeEvent } from 'react'
+import { useState } from 'react'
 
 // MUI Imports
 import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
-import InputAdornment from '@mui/material/InputAdornment'
 
 // Third-party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 // Type Imports
 import type { categoryType } from './ProductCategoryTable'
@@ -42,8 +40,6 @@ const AddCategoryDrawer = (props: Props) => {
   const [comment, setComment] = useState('')
   const [status, setStatus] = useState('')
 
-  // Refs
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Hooks
   const {
@@ -83,14 +79,7 @@ const AddCategoryDrawer = (props: Props) => {
     setStatus('')
   }
 
-  // Handle File Upload
-  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const { files } = event.target
 
-    if (files && files.length !== 0) {
-      setFileName(files[0].name)
-    }
-  }
 
   return (
     <Drawer
@@ -102,7 +91,7 @@ const AddCategoryDrawer = (props: Props) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <div className='flex items-center justify-between pli-6 plb-5'>
-        <Typography variant='h5'>Add Category</Typography>
+        <Typography variant='h5'>Add Organize</Typography>
         <IconButton size='small' onClick={handleReset}>
           <i className='tabler-x text-textSecondary text-2xl' />
         </IconButton>
@@ -111,7 +100,7 @@ const AddCategoryDrawer = (props: Props) => {
       <div className='p-6'>
         <form onSubmit={handleSubmit(data => handleFormSubmit(data))} className='flex flex-col gap-5'>
           <Controller
-            name='title'
+            name='vendor'
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
@@ -124,44 +113,7 @@ const AddCategoryDrawer = (props: Props) => {
               />
             )}
           />
-          <Controller
-            name='description'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <CustomTextField
-                {...field}
-                fullWidth
-                label='Description'
-                placeholder='Enter a description...'
-                {...(errors.description && { error: true, helperText: 'This field is required.' })}
-              />
-            )}
-          />
-          <div className='flex items-end gap-4'>
-            <CustomTextField
-              label='Attachment'
-              placeholder='No file chosen'
-              value={fileName}
-              className='flex-auto'
-              slotProps={{
-                input: {
-                  readOnly: true,
-                  endAdornment: fileName ? (
-                    <InputAdornment position='end'>
-                      <IconButton size='small' edge='end' onClick={() => setFileName('')}>
-                        <i className='tabler-x' />
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              }}
-            />
-            <Button component='label' variant='tonal' htmlFor='contained-button-file' className='min-is-fit'>
-              Choose
-              <input hidden id='contained-button-file' type='file' onChange={handleFileUpload} ref={fileInputRef} />
-            </Button>
-          </div>
+
           <CustomTextField
             select
             fullWidth
@@ -175,19 +127,11 @@ const AddCategoryDrawer = (props: Props) => {
             <MenuItem value='Office'>Office</MenuItem>
             <MenuItem value='Accessories'>Accessories</MenuItem>
           </CustomTextField>
-          <CustomTextField
-            fullWidth
-            label='Comment'
-            value={comment}
-            onChange={e => setComment(e.target.value)}
-            multiline
-            rows={4}
-            placeholder='Write a Comment...'
-          />
+
           <CustomTextField
             select
             fullWidth
-            label='Category Status'
+            label='Unit'
             value={status}
             onChange={e => setStatus(e.target.value)}
           >

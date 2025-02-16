@@ -7,10 +7,10 @@ import CardContent from '@mui/material/CardContent'
 import MenuItem from '@mui/material/MenuItem'
 
 // Type Imports
-import type { ProductType } from '@/types/apps/ecommerceTypes'
 
 // Component Imports
 import CustomTextField from '@core/components/mui/TextField'
+import type { UsersType } from '@/types/userTypes'
 
 type ProductStockType = { [key: string]: boolean }
 
@@ -24,13 +24,13 @@ const TableFilters = ({
   setData,
   productData
 }: {
-  setData: (data: ProductType[]) => void
-  productData?: ProductType[]
+  setData: (data: UsersType[]) => void
+  productData?: UsersType[]
 }) => {
   // States
-  const [category, setCategory] = useState<ProductType['category']>('')
+  const [category, setCategory] = useState<UsersType['category']>('')
   const [stock, setStock] = useState('')
-  const [status, setStatus] = useState<ProductType['status']>('')
+  const [status, setStatus] = useState<UsersType['status']>('')
 
   useEffect(
     () => {

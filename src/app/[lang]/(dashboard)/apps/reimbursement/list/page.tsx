@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid2'
 
 // Component Imports
 import ProductCard from '@views/reimbursement/list/ProductCard'
-import ProductListTable from '@views/reimbursement/list/ProductListTable'
+import ReimbursementList from '@/views/reimbursement/list/ReimbursementList'
 
 // Data Imports
 
@@ -25,7 +25,7 @@ import ProductListTable from '@views/reimbursement/list/ProductListTable'
   return res.json()
 } */
 
-const eCommerceProductsList = async () => {
+const ReimbursementsList = async () => {
   // Vars
   // const data = await getEcommerceData()
 
@@ -35,10 +35,10 @@ const eCommerceProductsList = async () => {
         <ProductCard />
       </Grid>
       <Grid size={{ xs: 12 }}>
-        <ProductListTable productData={[]} />
+        <ReimbursementList productData={[]} />
       </Grid>
     </Grid>
   )
 }
 
-export default eCommerceProductsList
+export default ReimbursementsList

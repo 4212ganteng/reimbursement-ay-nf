@@ -1,7 +1,11 @@
+'use client'
+
 // React Imports
 import { useActionState, useEffect } from 'react'
 
 // MUI Imports
+import { useRouter } from 'next/router'
+
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
@@ -53,6 +57,7 @@ const roleOption = ['MANAGER', 'STAFF', 'FINANCE']
 const AddUserDrawer = (props: Props) => {
 
   const [state, formAction, pending] = useActionState(RegisterUserAction, null)
+  const router = useRouter()
 
   console.log(state)
 
@@ -107,6 +112,7 @@ const AddUserDrawer = (props: Props) => {
   useEffect(() => {
     if (state?.status === 'success') {
       onDataSubmit()
+      router.reload()
       resetForm()
     } else {
       toast.error(state?.message)

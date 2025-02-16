@@ -1,4 +1,6 @@
 'use server'
+import { revalidatePath } from 'next/cache'
+
 import bcrypt from 'bcrypt'
 
 import type { Role, Status } from '@prisma/client'
@@ -42,17 +44,30 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
     }
   }
 
+  let success = false
+
   // input to db
   try {
     const hashPassword = await bcrypt.hash(password, 13)
 
     await UserService.createUser({ fullName, username, email, password: hashPassword, role, status, contact })
 
+    success = true
+
     return {
       status: 'success',
       message: 'User registered successfully'
     }
-  } catch (error) {
+  } catch (error) {}
+
+  if (success) {
+    revalidatePath('/[lang]/apps/user')
+
+    return {
+      status: 'success',
+      message: 'User registered successfully'
+    }
+  } else {
     return {
       status: 'error',
       message: 'Register Error!'

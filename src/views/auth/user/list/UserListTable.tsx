@@ -44,7 +44,7 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
   const handleAddUserSuccess = () => {
     setAddUserOpen(false)
 
-    toast.success('User added successfully!')
+    // toast.success('User added successfully!')
   }
 
   // const [data, setData] = useState(tableData || [])

@@ -113,7 +113,7 @@ const EditorToolbar = ({ editor }: { editor: Editor | null }) => {
   )
 }
 
-const ProductInformation = () => {
+const ApplicantInformation = () => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -135,17 +135,17 @@ const ProductInformation = () => {
 
   return (
     <Card>
-      <CardHeader title='Product Information' />
+      <CardHeader title='Applicant Information' />
       <CardContent>
         <Grid container spacing={6} className='mbe-6'>
           <Grid size={{ xs: 12 }}>
-            <CustomTextField fullWidth label='Product Name' placeholder='iPhone 14' />
+            <CustomTextField fullWidth label='Full Name' placeholder='Jhon doe' />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <CustomTextField fullWidth label='SKU' placeholder='FXSK123U' />
+            <CustomTextField fullWidth label='Position' placeholder='Staff' />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <CustomTextField fullWidth label='Barcode' placeholder='0123-4567' />
+            <CustomTextField fullWidth label='Contact' placeholder='0123-4567' />
           </Grid>
         </Grid>
         <Typography className='mbe-1'>Description (Optional)</Typography>
@@ -161,4 +161,4 @@ const ProductInformation = () => {
   )
 }
 
-export default ProductInformation
+export default ApplicantInformation
