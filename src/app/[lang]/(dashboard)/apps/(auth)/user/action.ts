@@ -49,8 +49,17 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
     }
   }
 
-  // input to db
+  // check unique email
+  const isRegistered = await UserService.findUser(email)
 
+  if (isRegistered) {
+    return {
+      status: 'error',
+      message: 'Email already exist'
+    }
+  }
+
+  // input to db
   const hashPassword = await bcrypt.hash(password, 13)
 
   const user = await UserService.createUser({
@@ -64,15 +73,7 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
   })
 
   if (user) {
-    revalidatePath('/[lang]/apps/user')
-    console.log('atas harus nya get')
-
-    // redirect('/en/apps/user')
-
-    return {
-      status: 'success',
-      message: 'User registered successfully'
-    }
+    redirect('/en/apps/user')
   } else {
     return {
       status: 'error',

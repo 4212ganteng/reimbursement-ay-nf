@@ -1,9 +1,10 @@
 "use client"
 
 // UserListTable.tsx
-import { useActionState, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import { useParams } from 'next/navigation'
+
 
 import { Button, Card, CardHeader, MenuItem, TablePagination } from '@mui/material'
 
@@ -23,12 +24,12 @@ import CustomTextField from '@core/components/mui/TextField'
 import tableStyles from '@core/styles/table.module.css'
 
 // import { TableFilters } from './TableFilters'
+import { RegisterUserAction } from '@/app/[lang]/(dashboard)/apps/(auth)/user/action'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import type { Locale } from '@/configs/i18n'
 import { DebouncedInput } from '@/utils/DebouncedInput'
 import AddUserDrawer from './AddUserDrawer'
 import { useUserTable } from './UserTable'
-import { RegisterUserAction } from '@/app/[lang]/(dashboard)/apps/(auth)/user/action'
 
 type UsersTypeWithAction = User & {
   action?: string
@@ -36,10 +37,13 @@ type UsersTypeWithAction = User & {
 
 const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => {
   const [state, formAction, pending] = useActionState(RegisterUserAction, null,)
-  const num = 1
 
-  console.log(num + 1)
-  console.log(state)
+
+  useEffect(() => {
+    if (state?.status === 'error') {
+      toast(state.message)
+    }
+  }, [state])
 
 
   const [addUserOpen, setAddUserOpen] = useState(false)
