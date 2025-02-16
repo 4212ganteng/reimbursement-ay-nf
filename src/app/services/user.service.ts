@@ -1,5 +1,6 @@
+import type { User } from '@prisma/client'
+
 import { prisma } from '@/utils/prisma'
-import { User } from '@prisma/client'
 
 export const UserService = {
   createUser: async (user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -16,5 +17,32 @@ export const UserService = {
     })
 
     return newUser
+  },
+
+  findUser: async (idOrEmail: string) => {
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          {
+            id: idOrEmail
+          },
+          {
+            email: idOrEmail
+          }
+        ]
+      }
+    })
+
+    return user
+  },
+
+  getAllUsers: async () => {
+    const data = await prisma.user.findMany({
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    return data
   }
 }

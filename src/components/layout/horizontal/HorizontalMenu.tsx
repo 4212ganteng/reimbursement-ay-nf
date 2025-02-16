@@ -1,4 +1,6 @@
 // MUI Imports
+import { useParams } from 'next/navigation'
+
 import { useTheme } from '@mui/material/styles'
 
 // Type Imports
@@ -21,8 +23,7 @@ import menuRootStyles from '@core/styles/horizontal/menuRootStyles'
 import verticalNavigationCustomStyles from '@core/styles/vertical/navigationCustomStyles'
 import verticalMenuItemStyles from '@core/styles/vertical/menuItemStyles'
 import verticalMenuSectionStyles from '@core/styles/vertical/menuSectionStyles'
-import { getDictionary } from '@/utils/getDictionary'
-import { useParams } from 'next/navigation'
+import type { getDictionary } from '@/utils/getDictionary'
 
 type RenderExpandIconProps = {
   level?: number
@@ -95,7 +96,20 @@ const HorizontalMenu = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof 
           <MenuItem href={`/${locale}/apps/user`}>{dictionary['navigation'].list}</MenuItem>
           <MenuItem href={`/${locale}/apps/user/view`}>{dictionary['navigation'].view}</MenuItem>
         </SubMenu>
+
+
+
+        <SubMenu label={dictionary['navigation'].reimbursement} icon={<i className='tabler-shopping-cart' />}>
+          <MenuItem href={`/${locale}/appsreimbursement/list`}>{dictionary['navigation'].list}</MenuItem>
+          <MenuItem href={`/${locale}/appsreimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
+          <MenuItem href={`/${locale}/appsreimbursement/category`}>
+            {dictionary['navigation'].category}
+          </MenuItem>
+        </SubMenu>
+
+
       </Menu>
+
 
 
       {/* <Menu

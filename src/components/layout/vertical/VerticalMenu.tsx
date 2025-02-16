@@ -1,4 +1,6 @@
 // MUI Imports
+import { useParams } from 'next/navigation'
+
 import { useTheme } from '@mui/material/styles'
 
 // Third-party Imports
@@ -19,8 +21,7 @@ import StyledVerticalNavExpandIcon from '@menu/styles/vertical/StyledVerticalNav
 // Style Imports
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
-import { getDictionary } from '@/utils/getDictionary'
-import { useParams } from 'next/navigation'
+import type { getDictionary } from '@/utils/getDictionary'
 
 type RenderExpandIconProps = {
   open?: boolean
@@ -86,6 +87,17 @@ const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
           <MenuItem href={`/${locale}/apps/user`}>{dictionary['navigation'].list}</MenuItem>
           <MenuItem href={`/${locale}/apps/user/view`}>{dictionary['navigation'].view}</MenuItem>
         </SubMenu>
+
+
+        <SubMenu label={dictionary['navigation'].reimbursement} icon={<i className='tabler-shopping-cart' />}>
+          <MenuItem href={`/${locale}/apps/reimbursement/list`}>{dictionary['navigation'].list}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/category`}>
+            {dictionary['navigation'].category}
+          </MenuItem>
+        </SubMenu>
+
+
 
 
       </Menu>

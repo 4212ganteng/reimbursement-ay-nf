@@ -1,29 +1,33 @@
+'use client'
+
 // React Imports
-import { useActionState, useState } from 'react'
+import { useActionState, useEffect } from 'react'
 
 // MUI Imports
+import { useRouter } from 'next/router'
+
 import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
 
 // Third-party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 // Types Imports
-import type { UsersType } from '@/types/userTypes'
+import { toast } from 'react-toastify'
+
 
 // Component Imports
-import CustomTextField from '@core/components/mui/TextField'
 import { RegisterUserAction } from '@/app/[lang]/(dashboard)/apps/(auth)/user/action'
+import CustomTextField from '@core/components/mui/TextField'
 
 type Props = {
   open: boolean
   handleClose: () => void
-  userData?: UsersType[]
-  onDataSubmit: (data) => Promise<void>
+  onDataSubmit: () => void
 }
 
 type FormValidateType = {
@@ -35,37 +39,41 @@ type FormValidateType = {
   status: string
 }
 
-type FormNonValidateType = {
-  company: string
-  country: string
-  contact: string
-}
+// type FormNonValidateType = {
+//   company: string
+//   country: string
+//   contact: string
+// }
 
 // Vars
-const initialData = {
-  company: '',
-  country: '',
-  contact: ''
-}
+// const initialData = {
+//   company: '',
+//   country: '',
+//   contact: ''
+// }
+
+const roleOption = ['MANAGER', 'STAFF', 'FINANCE']
 
 const AddUserDrawer = (props: Props) => {
 
   const [state, formAction, pending] = useActionState(RegisterUserAction, null)
+  const router = useRouter()
 
   console.log(state)
 
   // Props
-  const { open, handleClose, userData, onDataSubmit } = props
+  const { open, handleClose, onDataSubmit } = props
 
   // States
-  const [formData, setFormData] = useState<FormNonValidateType>(initialData)
+  // const [formData, setFormData] = useState<FormNonValidateType>(initialData)
 
   // Hooks
   const {
     control,
     reset: resetForm,
-    handleSubmit,
-    formState: { errors }
+
+    // handleSubmit,
+    // formState: { errors }
   } = useForm<FormValidateType>({
     defaultValues: {
       fullName: '',
@@ -99,15 +107,22 @@ const AddUserDrawer = (props: Props) => {
   //   resetForm({ fullName: '', username: '', email: '', role: '', password: '', status: '' })
   // }
 
-  const roleOption = [
-    'MANAGER',
-    'STAFF',
-    'FINANCE'
-  ]
+
+
+  useEffect(() => {
+    if (state?.status === 'success') {
+      onDataSubmit()
+      router.reload()
+      resetForm()
+    } else {
+      toast.error(state?.message)
+      console.log(state?.message)
+    }
+  }, [state, onDataSubmit, resetForm])
 
   const handleReset = () => {
     handleClose()
-    setFormData(initialData)
+    resetForm()
   }
 
   return (
@@ -242,13 +257,10 @@ const AddUserDrawer = (props: Props) => {
             type='number'
             fullWidth
             placeholder='(397) 294-5153'
-            value={formData.contact}
             defaultValue={state?.data?.contact}
-            onChange={e => setFormData({ ...formData, contact: e.target.value })}
+
           // {...(state?.errors?.contact && { error: true, helperText: state?.errors?.contact })}
-
           />
-
 
           <div className='flex items-center gap-4'>
             <Button variant='contained' type='submit' disabled={pending}>

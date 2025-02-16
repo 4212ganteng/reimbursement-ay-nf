@@ -3,7 +3,9 @@ import Link from 'next/link'
 
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table'
 
-import { Checkbox, Typography, Chip, IconButton } from '@mui/material'
+import { Checkbox, Chip, IconButton, Typography } from '@mui/material'
+
+import type { User } from '@prisma/client'
 
 import type { Locale } from '@configs/i18n'
 
@@ -14,18 +16,18 @@ import { getLocalizedUrl } from '@/utils/i18n'
 import { getInitials } from '@/utils/getInitials'
 import CustomAvatar from '@core/components/mui/Avatar'
 import OptionMenu from '@core/components/option-menu'
-import type { UsersType } from '@/types/userTypes'
 
 
 const columnHelper = createColumnHelper<UsersTypeWithAction>()
 
 
-type UsersTypeWithAction = UsersType & {
+type UsersTypeWithAction = User & {
   action?: string
 }
 
 const userRoleObj = {
   STAFF: { icon: 'tabler-crown', color: 'error' },
+
   // author: { icon: 'tabler-device-desktop', color: 'warning' },
   // editor: { icon: 'tabler-edit', color: 'info' },
   MANAGER: { icon: 'tabler-chart-pie', color: 'success' },

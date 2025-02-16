@@ -1,26 +1,26 @@
-// UserTable.tsx
 import { useState } from 'react'
-
-import { getCoreRowModel, getFacetedMinMaxValues, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
-
 
 import type { User } from '@prisma/client'
 
+import { getCoreRowModel, getFacetedMinMaxValues, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
+
 import type { Locale } from '@/configs/i18n'
+
+import { ReimbursementColumn } from './ReimbursementColumn'
 import { fuzzyFilter } from '@/utils/FuzyFilter'
-import { userColumns } from './UserColumn'
+
 
 type UsersTypeWithAction = User & {
   action?: string
 }
 
-export const useUserTable = (data: UsersTypeWithAction[], locale: Locale) => {
+export const useReimbursementTable = (data: UsersTypeWithAction[], locale: Locale) => {
   const [rowSelection, setRowSelection] = useState({})
   const [globalFilter, setGlobalFilter] = useState('')
 
   const table = useReactTable({
     data,
-    columns: userColumns(locale),
+    columns: ReimbursementColumn(locale),
     filterFns: {
       fuzzy: fuzzyFilter
     },

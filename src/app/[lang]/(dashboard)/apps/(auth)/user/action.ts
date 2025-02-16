@@ -1,8 +1,12 @@
 'use server'
+import { revalidatePath } from 'next/cache'
+
 import bcrypt from 'bcrypt'
-import { UserService } from '@/app/services/user.service'
-import { Role, Status } from '@prisma/client'
+
+import type { Role, Status } from '@prisma/client'
 import { z } from 'zod'
+
+import { UserService } from '@/app/services/user.service'
 
 const UserSchema = z.object({
   fullName: z.string().min(3),
@@ -12,6 +16,7 @@ const UserSchema = z.object({
   role: z.string().min(3),
   status: z.string().min(3)
 })
+
 export async function RegisterUserAction(prevState: unknown, formdata: FormData) {
   const fullName = formdata.get('fullName') as string
   const username = formdata.get('username') as string
@@ -39,16 +44,30 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
     }
   }
 
+  let success = false
+
   // input to db
   try {
     const hashPassword = await bcrypt.hash(password, 13)
+
     await UserService.createUser({ fullName, username, email, password: hashPassword, role, status, contact })
+
+    success = true
 
     return {
       status: 'success',
       message: 'User registered successfully'
     }
-  } catch (error) {
+  } catch (error) {}
+
+  if (success) {
+    revalidatePath('/[lang]/apps/user')
+
+    return {
+      status: 'success',
+      message: 'User registered successfully'
+    }
+  } else {
     return {
       status: 'error',
       message: 'Register Error!'
