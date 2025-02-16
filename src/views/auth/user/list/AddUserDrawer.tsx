@@ -1,11 +1,5 @@
 'use client'
 
-// React Imports
-import { useActionState, useEffect } from 'react'
-
-// MUI Imports
-import { useRouter } from 'next/router'
-
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
@@ -13,116 +7,27 @@ import IconButton from '@mui/material/IconButton'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 
-// Third-party Imports
-import { Controller, useForm } from 'react-hook-form'
-
-// Types Imports
-import { toast } from 'react-toastify'
-
-
 // Component Imports
-import { RegisterUserAction } from '@/app/[lang]/(dashboard)/apps/(auth)/user/action'
 import CustomTextField from '@core/components/mui/TextField'
 
 type Props = {
   open: boolean
   handleClose: () => void
-  onDataSubmit: () => void
+  formAction: (payload: FormData) => void
+  state: unknown,
+  pending: boolean
 }
-
-type FormValidateType = {
-  fullName: string
-  username: string
-  email: string
-  role: string
-  password: string
-  status: string
-}
-
-// type FormNonValidateType = {
-//   company: string
-//   country: string
-//   contact: string
-// }
-
-// Vars
-// const initialData = {
-//   company: '',
-//   country: '',
-//   contact: ''
-// }
 
 const roleOption = ['MANAGER', 'STAFF', 'FINANCE']
 
+
+
 const AddUserDrawer = (props: Props) => {
-
-  const [state, formAction, pending] = useActionState(RegisterUserAction, null)
-  const router = useRouter()
-
-  console.log(state)
-
   // Props
-  const { open, handleClose, onDataSubmit } = props
-
-  // States
-  // const [formData, setFormData] = useState<FormNonValidateType>(initialData)
-
-  // Hooks
-  const {
-    control,
-    reset: resetForm,
-
-    // handleSubmit,
-    // formState: { errors }
-  } = useForm<FormValidateType>({
-    defaultValues: {
-      fullName: '',
-      username: '',
-      email: '',
-      role: '',
-      password: '',
-      status: ''
-    }
-  })
-
-  // const onSubmit = (data: FormValidateType) => {
-  //   const newUser: UsersType = {
-  //     id: (userData?.length && userData?.length + 1) || 1,
-  //     avatar: `/images/avatars/${Math.floor(Math.random() * 8) + 1}.png`,
-  //     fullName: data.fullName,
-  //     username: data.username,
-  //     email: data.email,
-  //     role: data.role,
-  //     currentPlan: data.plan,
-  //     status: data.status,
-  //     company: formData.company,
-  //     country: formData.country,
-  //     contact: formData.contact,
-  //     billing: userData?.[Math.floor(Math.random() * 50) + 1].billing ?? 'Auto Debit'
-  //   }
-
-  //   setData([...(userData ?? []), newUser])
-  //   handleClose()
-  //   setFormData(initialData)
-  //   resetForm({ fullName: '', username: '', email: '', role: '', password: '', status: '' })
-  // }
-
-
-
-  useEffect(() => {
-    if (state?.status === 'success') {
-      onDataSubmit()
-      router.reload()
-      resetForm()
-    } else {
-      toast.error(state?.message)
-      console.log(state?.message)
-    }
-  }, [state, onDataSubmit, resetForm])
+  const { open, handleClose, formAction, state, pending } = props
 
   const handleReset = () => {
     handleClose()
-    resetForm()
   }
 
   return (
@@ -144,116 +49,89 @@ const AddUserDrawer = (props: Props) => {
       <div>
         {/* <form  onSubmit={handleSubmit(data => onSubmit(data))} className='flex flex-col gap-6 p-6'> */}
         <form action={formAction} className='flex flex-col gap-6 p-6'>
-          <Controller
+
+          <CustomTextField
+            defaultValue={state?.data?.fullName}
             name='fullName'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <CustomTextField
-                defaultValue={state?.data?.fullName}
-                {...field}
-                fullWidth
-                label='Full Name'
-                placeholder='John Doe'
-                {...(state?.errors?.fullName && { error: true, helperText: state?.errors?.fullName })}
-              />
-            )}
+            fullWidth
+            label='Full Name'
+            placeholder='John Doe'
+            {...(state?.errors?.fullName && { error: true, helperText: state?.errors?.fullName })}
           />
-          <Controller
+
+
+
+          <CustomTextField
+            defaultValue={state?.data?.username}
             name='username'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <CustomTextField
-                defaultValue={state?.data?.username}
-                {...field}
-                fullWidth
-                label='Username'
-                placeholder='johndoe'
-                {...(state?.errors?.username && { error: true, helperText: state?.errors?.username })}
-              />
-            )}
-          />
-          <Controller
-            name='password'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <CustomTextField
-                defaultValue={state?.data?.password}
-                type='password'
-                {...field}
-                fullWidth
-                label='Password'
-                placeholder='input password'
-                {...(state?.errors?.password && { error: true, helperText: state?.errors?.password })}
-              />
-            )}
-          />
-          <Controller
-            name='email'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <CustomTextField
-                defaultValue={state?.data?.email}
-                {...field}
-                fullWidth
-                type='email'
-                label='Email'
-                placeholder='johndoe@gmail.com'
-                {...(state?.errors?.email && { error: true, helperText: state?.errors?.email })}
-              />
-            )}
-          />
-          <Controller
-            name='role'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <CustomTextField
-                defaultValue={state?.data?.role}
-                select
-                fullWidth
-                id='select-role'
-                label='Select Role'
-                {...field}
-                {...(state?.errors?.role && { error: true, helperText: state?.errors?.role })}
-              >
-
-                {roleOption.map((option, index) => (
-                  <MenuItem key={index} value={option}>{option}</MenuItem>
-
-                ))}
-
-              </CustomTextField>
-            )}
-          />
-
-          <Controller
-            name='status'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <CustomTextField
-                defaultValue={state?.data?.status}
-                select
-                fullWidth
-                id='select-status'
-                label='Select Status'
-                {...field}
-                {...(state?.errors?.status && { error: true, helperText: state?.errors?.status })}
-              >
-                <MenuItem value='ACTIVE'>Active</MenuItem>
-                <MenuItem value='PENDING'>Pending</MenuItem>
-                <MenuItem value='INACTIVE'>Inactive</MenuItem>
-              </CustomTextField>
-            )}
+            fullWidth
+            label='Username'
+            placeholder='johndoe'
+            {...(state?.errors?.username && { error: true, helperText: state?.errors?.username })}
           />
 
 
           <CustomTextField
+            defaultValue={state?.data?.password}
+            type='password'
+            name='password'
+            fullWidth
+            label='Password'
+            placeholder='input password'
+            {...(state?.errors?.password && { error: true, helperText: state?.errors?.password })}
+          />
+
+
+          <CustomTextField
+            defaultValue={state?.data?.email}
+            name='email'
+            fullWidth
+            type='email'
+            label='Email'
+            placeholder='johndoe@gmail.com'
+            {...(state?.errors?.email && { error: true, helperText: state?.errors?.email })}
+          />
+
+          <CustomTextField
+            defaultValue={state?.data?.role ?? "MANAGER"}
+
+            // value={'MANAGER'}
+            name='role'
+            select
+            fullWidth
+            id='select-role'
+            label='Select Role'
+            {...(state?.errors?.role && { error: true, helperText: state?.errors?.role })}
+          >
+            {roleOption.map((option, index) => (
+              <MenuItem key={index} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </CustomTextField>
+
+          <CustomTextField
+            defaultValue={state?.data?.status ?? "ACTIVE"}
+
+            // value={'PENDING'}
+            select
+            fullWidth
+            id='select-status'
+            label='Select Status'
+            name='status'
+            {...(state?.errors?.status && { error: true, helperText: state?.errors?.status })}
+          >
+            <MenuItem value='ACTIVE'>Active</MenuItem>
+            <MenuItem value='PENDING'>Pending</MenuItem>
+            <MenuItem value='INACTIVE'>Inactive</MenuItem>
+          </CustomTextField>
+
+
+
+
+          <CustomTextField
             label='Contact'
+            name='contact'
             type='number'
             fullWidth
             placeholder='(397) 294-5153'

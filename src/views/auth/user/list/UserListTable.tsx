@@ -1,7 +1,7 @@
 "use client"
 
 // UserListTable.tsx
-import { useState } from 'react'
+import { useActionState, useState } from 'react'
 
 import { useParams } from 'next/navigation'
 
@@ -28,12 +28,16 @@ import type { Locale } from '@/configs/i18n'
 import { DebouncedInput } from '@/utils/DebouncedInput'
 import AddUserDrawer from './AddUserDrawer'
 import { useUserTable } from './UserTable'
+import { RegisterUserAction } from '@/app/[lang]/(dashboard)/apps/(auth)/user/action'
 
 type UsersTypeWithAction = User & {
   action?: string
 }
 
 const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => {
+  const [state, formAction, pending] = useActionState(RegisterUserAction, null)
+
+
   const [addUserOpen, setAddUserOpen] = useState(false)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,13 +45,7 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
   const { lang: locale } = useParams()
   const { table, globalFilter, setGlobalFilter } = useUserTable(filteredData, locale as Locale)
 
-  const handleAddUserSuccess = () => {
-    setAddUserOpen(false)
-
-    // toast.success('User added successfully!')
-  }
-
-  // const [data, setData] = useState(tableData || [])
+  console.log(state)
 
   return (
     <>
@@ -156,7 +154,10 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
       <AddUserDrawer
         open={addUserOpen}
         handleClose={() => setAddUserOpen(!addUserOpen)}
-        onDataSubmit={handleAddUserSuccess}
+        formAction={formAction}
+        pending={pending}
+        state={state}
+
 
       />
     </>
