@@ -63,11 +63,11 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
     contact
   })
 
-  console.log(user)
-
   if (user) {
-    // revalidatePath('/en/apps/user', 'page')
-    redirect('/en/apps/user')
+    revalidatePath('/[lang]/apps/user')
+    console.log('atas harus nya get')
+
+    // redirect('/en/apps/user')
 
     return {
       status: 'success',

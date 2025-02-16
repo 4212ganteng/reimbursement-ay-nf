@@ -10,11 +10,32 @@ import Typography from '@mui/material/Typography'
 // Component Imports
 import CustomTextField from '@core/components/mui/TextField'
 
+type TStateUser = {
+  data: {
+    fullName?: string
+    username?: string
+    password?: string
+    email?: string
+    role?: string
+    status?: string
+    contact?: string
+  }
+  errors?: {
+    fullName?: string
+    username?: string
+    password?: string
+    email?: string
+    role?: string
+    status?: string
+    contact?: string
+  }
+}
+
 type Props = {
   open: boolean
   handleClose: () => void
   formAction: (payload: FormData) => void
-  state: unknown,
+  state: TStateUser
   pending: boolean
 }
 

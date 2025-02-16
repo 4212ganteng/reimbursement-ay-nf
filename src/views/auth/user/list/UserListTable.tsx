@@ -35,7 +35,11 @@ type UsersTypeWithAction = User & {
 }
 
 const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => {
-  const [state, formAction, pending] = useActionState(RegisterUserAction, null)
+  const [state, formAction, pending] = useActionState(RegisterUserAction, null,)
+  const num = 1
+
+  console.log(num + 1)
+  console.log(state)
 
 
   const [addUserOpen, setAddUserOpen] = useState(false)
