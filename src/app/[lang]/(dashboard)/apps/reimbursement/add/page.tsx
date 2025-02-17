@@ -12,8 +12,14 @@ import ProductImage from '@views/reimbursement/add/ProductImage'
 
 import ProductPricing from '@views/reimbursement/add/ProductPricing'
 import ProductOrganize from '@views/reimbursement/add/ProductOrganize'
+import serverAuth from '@/libs/server-auth'
 
-const eCommerceProductsAdd = () => {
+const eCommerceProductsAdd = async () => {
+
+  const user = await serverAuth()
+
+  console.log('user auth', user)
+
   return (
     <Grid container spacing={6}>
       <Grid size={{ xs: 12 }}>

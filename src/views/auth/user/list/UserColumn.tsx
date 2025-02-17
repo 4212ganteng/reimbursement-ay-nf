@@ -79,7 +79,7 @@ export const userColumns = (locale: Locale): ColumnDef<UsersTypeWithAction, any>
       <div className='flex items-center gap-4'>
         {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })}
         <div className='flex flex-col'>
-          <Typography color='text.primary' className='font-medium'>
+          <Typography color='text.primary' className='font-medium capitalize'>
             {row.original.fullName}
           </Typography>
           <Typography variant='body2'>{row.original.username}</Typography>
@@ -101,18 +101,20 @@ export const userColumns = (locale: Locale): ColumnDef<UsersTypeWithAction, any>
       </div>
     )
   }),
-  columnHelper.accessor('currentPlan', {
-    header: 'Plan',
+  columnHelper.accessor('email', {
+    header: 'Email',
     cell: ({ row }) => (
       <Typography className='capitalize' color='text.primary'>
-        {row.original.currentPlan}
+        {row.original.email}
       </Typography>
     )
   }),
-  columnHelper.accessor('billing', {
-    header: 'Billing',
-    cell: ({ row }) => <Typography>{row.original.billing}</Typography>
+  columnHelper.accessor('contact', {
+    header: 'Contact',
+    cell: ({ row }) => <Typography>{row.original.contact}</Typography>
   }),
+
+
   columnHelper.accessor('status', {
     header: 'Status',
     cell: ({ row }) => (
