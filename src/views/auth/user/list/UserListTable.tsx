@@ -1,9 +1,10 @@
 "use client"
 
 // UserListTable.tsx
-import { useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import { useParams } from 'next/navigation'
+
 
 import { Button, Card, CardHeader, MenuItem, TablePagination } from '@mui/material'
 
@@ -23,6 +24,7 @@ import CustomTextField from '@core/components/mui/TextField'
 import tableStyles from '@core/styles/table.module.css'
 
 // import { TableFilters } from './TableFilters'
+import { RegisterUserAction } from '@/app/[lang]/(dashboard)/apps/(auth)/user/action'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import type { Locale } from '@/configs/i18n'
 import { DebouncedInput } from '@/utils/DebouncedInput'
@@ -34,6 +36,16 @@ type UsersTypeWithAction = User & {
 }
 
 const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => {
+  const [state, formAction, pending] = useActionState(RegisterUserAction, null,)
+
+
+  useEffect(() => {
+    if (state?.status === 'error') {
+      toast(state.message)
+    }
+  }, [state])
+
+
   const [addUserOpen, setAddUserOpen] = useState(false)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,13 +53,7 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
   const { lang: locale } = useParams()
   const { table, globalFilter, setGlobalFilter } = useUserTable(filteredData, locale as Locale)
 
-  const handleAddUserSuccess = () => {
-    setAddUserOpen(false)
-
-    // toast.success('User added successfully!')
-  }
-
-  // const [data, setData] = useState(tableData || [])
+  console.log(state)
 
   return (
     <>
@@ -156,7 +162,10 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
       <AddUserDrawer
         open={addUserOpen}
         handleClose={() => setAddUserOpen(!addUserOpen)}
-        onDataSubmit={handleAddUserSuccess}
+        formAction={formAction}
+        pending={pending}
+        state={state}
+
 
       />
     </>

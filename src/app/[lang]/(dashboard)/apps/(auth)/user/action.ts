@@ -1,6 +1,8 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 
+import { redirect } from 'next/navigation'
+
 import bcrypt from 'bcrypt'
 
 import type { Role, Status } from '@prisma/client'
@@ -26,6 +28,9 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
   const status = formdata.get('status') as Status
   const contact = Number(formdata.get('contact'))
 
+  console.log('p')
+  console.log(role, status)
+
   const inputValidation = UserSchema.safeParse({ fullName, username, email, password, role, status, contact })
 
   if (!inputValidation.success) {
@@ -44,29 +49,31 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
     }
   }
 
-  let success = false
+  // check unique email
+  const isRegistered = await UserService.findUser(email)
+
+  if (isRegistered) {
+    return {
+      status: 'error',
+      message: 'Email already exist'
+    }
+  }
 
   // input to db
-  try {
-    const hashPassword = await bcrypt.hash(password, 13)
+  const hashPassword = await bcrypt.hash(password, 13)
 
-    await UserService.createUser({ fullName, username, email, password: hashPassword, role, status, contact })
+  const user = await UserService.createUser({
+    fullName,
+    username,
+    email,
+    password: hashPassword,
+    role,
+    status,
+    contact
+  })
 
-    success = true
-
-    return {
-      status: 'success',
-      message: 'User registered successfully'
-    }
-  } catch (error) {}
-
-  if (success) {
-    revalidatePath('/[lang]/apps/user')
-
-    return {
-      status: 'success',
-      message: 'User registered successfully'
-    }
+  if (user) {
+    redirect('/en/apps/user')
   } else {
     return {
       status: 'error',
