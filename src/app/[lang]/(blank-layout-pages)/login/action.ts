@@ -65,6 +65,7 @@ export async function LoginAction(prevState: unknown, formData: FormData) {
     id: user.id,
     fullName: user.fullName,
     email: user.email,
+    avatarUrl: user.avatarUrl,
     Role: user.role,
     status: user.status,
     contact: user.contact
