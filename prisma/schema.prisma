@@ -50,12 +50,13 @@ model User {
 model Reimbursement {
   id String @id @default(cuid())
   slug Int @default(autoincrement())
-  title String
-  description String
-  notes String
+  title String?
+  description String?
+  notes String?
   price Float
   invoiceImage String
   status SubmissionStatus @default(PENDING)
+  date String
   userId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

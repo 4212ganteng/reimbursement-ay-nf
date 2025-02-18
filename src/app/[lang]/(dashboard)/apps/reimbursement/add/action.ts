@@ -1,4 +1,3 @@
-// app/[lang]/(dashboard)/apps/reimbursement/add/action.ts
 'use server'
 
 import { cookies } from 'next/headers'
@@ -6,78 +5,85 @@ import { redirect } from 'next/navigation'
 
 import { z } from 'zod'
 
-import { prisma } from '@/utils/prisma'
+import { reimbursementService } from '@/app/services/reimbursement.service'
+import { uploadFile } from '@/utils/aws'
+import serverAuth from '@/libs/server-auth'
 
 // Definisikan type untuk response
 type ActionResponse = {
   success: boolean
   message?: string
+  errors?: any
   data?: any
 }
 
 // Schema validasi untuk form data
 const ReimbursementSchema = z.object({
-  fullName: z.string().min(1, 'Full name is required'),
-  position: z.string().min(1, 'Position is required'),
-  contact: z.string().min(1, 'Contact is required'),
-  description: z.string().optional()
+  description: z.string().optional(),
+  price: z.number(),
+  date: z.string(),
+  reimbursmentImage: z.instanceof(File)
 })
 
 export async function submitReimbursementAction(prevstate: unknown, formData: FormData): Promise<ActionResponse> {
   try {
-    // Ambil cookie dengan safe check
-    const cookieStore = await cookies()
-    const userId = cookieStore.get('userId')?.value
-
-    // if (!userId) {
-    //   return {
-    //     success: false,
-    //     message: 'Unauthorized: User not authenticated'
-    //   }
-    // }
-
-    // Parse dan validasi form data
     const rawFormData = {
-      fullName: formData.get('fullName'),
-      position: formData.get('position'),
-      contact: formData.get('contact'),
-      description: formData.get('description') || ''
+      reimbursmentImage: formData.get('reimbursementImage'),
+      date: formData.get('date'),
+      price: Number(formData.get('price')),
+      description: formData.get('description') as string
     }
 
+    console.log({ rawFormData })
     const validatedData = ReimbursementSchema.safeParse(rawFormData)
+
+    console.log({ validatedData })
 
     if (!validatedData.success) {
       return {
         success: false,
+        errors: validatedData.error.flatten().fieldErrors,
         message: 'Validation failed',
         data: validatedData.error.errors
       }
     }
 
-    // Process file uploads if any
-    const files = formData.getAll('files')
-    const fileUrls = []
+    const userId = await serverAuth()
 
-    console.log({ files, fileUrls, rawFormData })
+    console.log({ userId })
 
-    // Implement your file upload logic here
-    // for (const file of files) {
-    //   const uploadedUrl = await uploadFile(file)
-    //   fileUrls.push(uploadedUrl)
-    // }
-
-    // Save to database
-    const reimbursement = await prisma.reimbursement.create({
-      data: {
-        userId,
-        ...validatedData.data,
-        status: 'PENDING',
-        attachments: {
-          create: fileUrls.map(url => ({
-            fileUrl: url
-          }))
-        }
+    if (!userId) {
+      return {
+        success: false,
+        message: 'Unauthorized: User not authenticated'
       }
+    }
+
+    const newReimbursement = await reimbursementService.createReimbursement({
+      description: validatedData.data.description ?? null,
+      invoiceImage: validatedData.data.reimbursmentImage.name,
+      price: validatedData.data.price,
+      date: validatedData.data.date,
+      userId: userId.id,
+      status: 'PENDING'
+    })
+
+    console.log({ newReimbursement })
+
+    if (!newReimbursement) {
+      return {
+        success: false,
+        message: 'Error creating course'
+      }
+    }
+
+    console.log('aman si')
+
+    // Process file uploads if any
+    await uploadFile({
+      key: newReimbursement.invoiceImage,
+      body: validatedData.data.reimbursmentImage,
+      folder: `reimbust/${newReimbursement.id}`
     })
 
     // Redirect on success
