@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import type { JwtPayload } from 'jsonwebtoken'
 import jwt from 'jsonwebtoken'
 
-interface AuthPayload extends JwtPayload {
+export interface AuthPayload extends JwtPayload {
   id: string
   fullName: string
   email: string

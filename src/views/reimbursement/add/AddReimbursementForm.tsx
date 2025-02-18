@@ -2,153 +2,157 @@
 
 import { useActionState, useState } from "react"
 
-import { Button, Card, CardContent, CardHeader, Divider, Typography } from "@mui/material"
+import { Avatar, Box, Button, Card, CardContent, CardHeader, Typography } from "@mui/material"
 import Grid from '@mui/material/Grid2'
 import { useDropzone } from "react-dropzone"
-import { EditorContent, useEditor } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import Placeholder from "@tiptap/extension-placeholder"
-import TextAlign from "@tiptap/extension-text-align"
-import Underline from "@tiptap/extension-underline"
 
-import CustomAvatar from "@/@core/components/mui/Avatar"
 import CustomTextField from "@/@core/components/mui/TextField"
-import Link from "@/components/Link"
-import type { FileProp } from "@/types/fileType"
-import Dropzone from "@/utils/Dropzone"
-import { EditorToolbar } from "@/utils/EditorToolbar"
-import FileList from "@/utils/FileList"
 import { submitReimbursementAction } from "@/app/[lang]/(dashboard)/apps/reimbursement/add/action"
+import type { AuthPayload } from "@/libs/server-auth"
+import AppReactDatepicker from "@/libs/styles/AppReactDatepicker"
+import type { FileProp } from "@/types/fileType"
 
 
-const AddReimbursementForm = () => {
+const AddReimbursementForm = ({ authData }: { authData: AuthPayload }) => {
   const [state, formAction, pending] = useActionState(submitReimbursementAction, null)
-  const [files, setFiles] = useState<File[]>([])
+  const [reimbursementImage, setReimbursement] = useState<File[]>([])
+  const [date, setDate] = useState<Date | null | undefined>(new Date())
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: File[]) => {
-      setFiles(acceptedFiles.map((file: File) => Object.assign(file)))
+      setReimbursement(acceptedFiles.map((file: File) => Object.assign(file)))
     }
   })
 
-  const handleRemoveFile = (file: FileProp) => {
-    const filtered = files.filter((i: FileProp) => i.name !== file.name)
 
-    setFiles([...filtered])
-  }
+  console.log({ state })
 
-  const handleRemoveAllFiles = () => {
-    setFiles([])
-  }
+  // const handleRemoveFile = (file: FileProp) => {
+  //   const filtered = reimbursementImage.filter((i: FileProp) => i.name !== file.name)
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Placeholder.configure({
-        placeholder: 'Write something here...'
-      }),
-      TextAlign.configure({
-        types: ['heading', 'paragraph']
-      }),
-      Underline
-    ],
-    immediatelyRender: false
-  })
+  //   setReimbursement([...filtered])
+  // }
+
+  // const handleRemoveAllFiles = () => {
+  //   setReimbursement([])
+  // }
+
+
 
   const handleSubmit = async (formData: FormData) => {
-    // Append editor content if exists
-    if (editor) {
-      formData.append('description', editor.getHTML())
-    }
 
     // Append files if any
-    files.forEach(file => {
-      formData.append('files', file)
+    reimbursementImage.forEach(fileReimbust => {
+      formData.append('reimbursementImage', fileReimbust)
     })
+
+
 
     // Call the server action
     return formAction(formData)
   }
 
+  const img = reimbursementImage.map((file: FileProp) => (
+    <img key={file.name} alt={file.name} className='single-file-image' src={URL.createObjectURL(file as any)} />
+  ))
+
+
   return (
-    <form action={handleSubmit}>
+    <form action={formAction}>
       <Card>
         <CardHeader title='Applicant Information' />
         <CardContent>
           <Grid container spacing={6} className='mbe-6'>
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <CustomTextField
                 fullWidth
                 name="fullName"
+                value={authData.fullName ?? null}
                 label='Full Name'
-                placeholder='Jhon doe'
-                required
+
+                // placeholder='Jhon doe'
+                disabled
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
               <CustomTextField
                 fullWidth
                 name="position"
+                value={authData.Role ?? null}
                 label='Position'
-                placeholder='Staff'
-                required
+
+                // placeholder='Jhon doe'
+                disabled
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <AppReactDatepicker
+                selected={date}
+                name="date"
+                id='basic-input'
+                onChange={(date: Date | null) => setDate(date)}
+                placeholderText='Click to select a date'
+                customInput={<CustomTextField label='Date' fullWidth />}
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
               <CustomTextField
                 fullWidth
-                name="contact"
-                label='Contact'
+                name="price"
+                label='Price'
                 placeholder='0123-4567'
+                type="number"
                 required
               />
             </Grid>
           </Grid>
-          <Typography className='mbe-1'>Description (Optional)</Typography>
-          <Card className='p-0 border shadow-none'>
-            <CardContent className='p-0'>
-              <EditorToolbar editor={editor} />
-              <Divider className='mli-6' />
-              <EditorContent editor={editor} className='bs-[135px] overflow-y-auto flex' />
-            </CardContent>
-          </Card>
 
-          <Dropzone>
-            <CardHeader
-              title='Product Image'
-              action={
-                <Typography component={Link} color='primary.main' className='font-medium'>
-                  Add media from URL
-                </Typography>
-              }
-              sx={{ '& .MuiCardHeader-action': { alignSelf: 'center' } }}
+          <Grid size={{ xs: 12 }}>
+            <CustomTextField
+
+              rows={8}
+              multiline
+              fullWidth
+              name="description"
+              label='Description'
+              placeholder='Write something here...'
+
             />
-            <CardContent>
-              <div {...getRootProps({ className: 'dropzone' })}>
-                <input {...getInputProps()} />
-                <div className='flex items-center flex-col gap-2 text-center'>
-                  <CustomAvatar variant='rounded' skin='light' color='secondary'>
+          </Grid>
+
+          <CardHeader
+            title='Product Image'
+
+            // action={
+            //   <Typography component={Link} color='primary.main' className='font-medium'>
+            //     Add media from URL
+            //   </Typography>
+            // }
+            sx={{ '& .MuiCardHeader-action': { alignSelf: 'center' } }}
+          />
+          <CardContent>
+            <Box {...getRootProps({ className: 'dropzone', })} {...(reimbursementImage.length && { sx: { height: 450 } })}>
+              <input {...getInputProps()} name="reimbursementImage" />
+              {reimbursementImage.length ? (
+                img
+              ) : (
+                <div className='flex items-center flex-col'>
+                  <Avatar variant='rounded' className='bs-12 is-12 mbe-9'>
                     <i className='tabler-upload' />
-                  </CustomAvatar>
-                  <Typography variant='h4'>Drag and Drop Your Image Here.</Typography>
-                  <Typography color='text.disabled'>or</Typography>
-                  <Button variant='tonal' size='small'>
-                    Browse Image
-                  </Button>
+                  </Avatar>
+                  <Typography variant='h4' className='mbe-2.5'>
+                    Drop files here or click to upload.
+                  </Typography>
+                  <Typography>
+                    Drop files here or click{' '}
+
+                    thorough your machine
+                  </Typography>
                 </div>
-              </div>
-              {files.length ? (
-                <>
-                  <FileList files={files} onRemoveFile={handleRemoveFile} />
-                  <div className='buttons'>
-                    <Button color='error' variant='tonal' onClick={handleRemoveAllFiles}>
-                      Remove All
-                    </Button>
-                  </div>
-                </>
-              ) : null}
-            </CardContent>
-          </Dropzone>
+              )}
+            </Box>
+          </CardContent>
+
 
           {state?.message && (
             <Typography color="error" className="mt-2">
