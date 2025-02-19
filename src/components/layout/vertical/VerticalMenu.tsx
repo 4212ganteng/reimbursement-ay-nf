@@ -90,11 +90,12 @@ const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
 
 
         <SubMenu label={dictionary['navigation'].reimbursement} icon={<i className='tabler-shopping-cart' />}>
-          <MenuItem href={`/${locale}/apps/reimbursement/list`}>{dictionary['navigation'].list}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/list`}>{dictionary['navigation'].pending}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/list/approved`}>{dictionary['navigation'].approved}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/list/rejected`}>{dictionary['navigation'].rejected}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/list/all-status`}>{dictionary['navigation'].list}</MenuItem>
           <MenuItem href={`/${locale}/apps/reimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
-          <MenuItem href={`/${locale}/apps/reimbursement/category`}>
-            {dictionary['navigation'].category}
-          </MenuItem>
+
         </SubMenu>
 
 

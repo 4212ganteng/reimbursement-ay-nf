@@ -103,6 +103,9 @@
     "disabledMenu": "Disabled Menu",
     "about": "About",
     "home": "Home",
-    "reimbursement": "Reimbursement"
+    "reimbursement": "Reimbursement",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "pending": "Pending"
   }
 }

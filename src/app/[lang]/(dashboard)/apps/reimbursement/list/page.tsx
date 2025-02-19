@@ -9,7 +9,7 @@ import { reimbursementService } from '@/app/services/reimbursement.service'
 
 
 const ReimbursementsList = async () => {
-  const data = await reimbursementService.getAllReimbustmen()
+  const data = await reimbursementService.getPendingReimbustmen()
 
 
 

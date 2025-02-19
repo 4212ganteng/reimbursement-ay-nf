@@ -33,15 +33,16 @@ import { getLocalizedUrl } from '@/utils/i18n'
 // Style Imports
 import { DebouncedInput } from '@/utils/DebouncedInput'
 import tableStyles from '@core/styles/table.module.css'
-import { useReimbursementTable } from './useReimbursementTable'
+import { useReimbursementApproveOrReject } from './useReimbursementApproveOrReject'
 
-const ReimbursementList = ({ reimbusData }: { reimbusData?: Reimbursement[] }) => {
+
+const ReimbursementListApproveOrReject = ({ reimbusData }: { reimbusData?: Reimbursement[] }) => {
   // States
   const [filteredData, setFilteredData] = useState(reimbusData || [])
 
   // Hooks
   const { lang: locale } = useParams()
-  const { table, globalFilter, setGlobalFilter } = useReimbursementTable(filteredData, locale as Locale)
+  const { table, globalFilter, setGlobalFilter } = useReimbursementApproveOrReject(filteredData, locale as Locale)
 
   return (
     <>
@@ -155,6 +156,6 @@ const ReimbursementList = ({ reimbusData }: { reimbusData?: Reimbursement[] }) =
   )
 }
 
-export default ReimbursementList
+export default ReimbursementListApproveOrReject
 
 

@@ -2,50 +2,32 @@
 
 import { revalidatePath } from 'next/cache'
 
-// Mock service functions (replace with your actual service calls)
-const reimbursementService = {
-  approveReimbursement: async (id: string) => {
-    // Simulate API call to approve reimbursement
-    console.log(`Reimbursement with ID ${id} approved`)
+import { redirect } from 'next/navigation'
 
-    return { success: true }
-  },
-  rejectReimbursement: async (id: string) => {
-    // Simulate API call to reject reimbursement
-    console.log(`Reimbursement with ID ${id} rejected`)
-
-    return { success: true }
-  }
-}
+import { reimbursementService } from '@/app/services/reimbursement.service'
 
 export const approveReimbursement = async (id: string) => {
-  try {
-    const result = await reimbursementService.approveReimbursement(id)
+  const result = await reimbursementService.approveReimbursement(id)
 
-    if (result.success) {
-      revalidatePath('/path-to-reimbursement-page') // Revalidate the page to reflect changes
-
-      return { success: true, message: 'Reimbursement approved successfully' }
-    }
-  } catch (error) {
-    console.error('Error approving reimbursement:', error)
+  if (!result) {
+    console.error('Error approving reimbursement:')
 
     return { success: false, message: 'Failed to approve reimbursement' }
   }
+
+  revalidatePath('/en/apps/reimbursement/list/approved', 'page') // Revalidate the page to reflect changes
 }
 
 export const rejectReimbursement = async (id: string) => {
-  try {
-    const result = await reimbursementService.rejectReimbursement(id)
+  const result = await reimbursementService.rejectReimbursement(id)
 
-    if (result.success) {
-      revalidatePath('/path-to-reimbursement-page') // Revalidate the page to reflect changes
-
-      return { success: true, message: 'Reimbursement rejected successfully' }
-    }
-  } catch (error) {
-    console.error('Error rejecting reimbursement:', error)
+  if (!result) {
+    console.error('Error rejecting reimbursement:')
 
     return { success: false, message: 'Failed to reject reimbursement' }
   }
+
+  // revalidatePath('/[lang]/apps/reimbursement/list', 'page') // Revalidate the page to reflect changes
+
+  redirect('/en/apps/reimbursement/list/rejected')
 }

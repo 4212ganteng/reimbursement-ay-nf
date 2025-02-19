@@ -11,8 +11,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 
-import { reimbursementService } from '@/app/services/reimbursement.service'
-import { approveReimbursement } from '@/app/[lang]/(dashboard)/apps/reimbursement/list/action'
+import { approveReimbursement, rejectReimbursement } from '@/app/[lang]/(dashboard)/apps/reimbursement/list/action'
 
 type ActionModalState = {
   open: boolean
@@ -32,13 +31,17 @@ export const ReimbustApproveAction = ({ row }: { row: any }) => {
   const handleAction = async () => {
     try {
       if (modalState.type === 'approve') {
-        await approveReimbursement(row.original.id)
+        const approved = await approveReimbursement(row.original.id)
+
+        console.log(approved)
       } else if (modalState.type === 'reject') {
-        await reimbursementService.rejectReimbursement(row.original.id)
+        await rejectReimbursement(row.original.id)
+
       }
 
       setModalState({ open: false, type: null })
       router.refresh()
+
     } catch (error) {
       console.error('Error updating reimbursement:', error)
     }

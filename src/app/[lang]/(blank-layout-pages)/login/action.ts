@@ -81,5 +81,5 @@ export async function LoginAction(prevState: unknown, formData: FormData) {
     path: '/'
   })
 
-  redirect('/en/apps/home')
+  redirect('/en/home')
 }

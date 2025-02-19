@@ -1,13 +1,12 @@
 'use server'
 
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { z } from 'zod'
 
 import { reimbursementService } from '@/app/services/reimbursement.service'
-import { uploadFile } from '@/utils/aws'
 import serverAuth from '@/libs/server-auth'
+import { uploadFile } from '@/utils/aws'
 
 // Definisikan type untuk response
 type ActionResponse = {
@@ -73,7 +72,7 @@ export async function submitReimbursementAction(prevstate: unknown, formData: Fo
     if (!newReimbursement) {
       return {
         success: false,
-        message: 'Error creating course'
+        message: 'Error creating reimbursement'
       }
     }
 

@@ -7,18 +7,14 @@ import { Checkbox, Chip, Typography } from '@mui/material'
 
 import type { Locale } from '@configs/i18n'
 
-const columnHelper = createColumnHelper<ReimbusTypeWithAction>()
+const columnHelper = createColumnHelper<ReimbursmentResponType>()
 
 
 
 
 import type { ThemeColor } from '@/@core/types'
 import type { ReimbursmentResponType } from '@/types/ReimbursemenType'
-import { ReimbustApproveAction } from '../action/ReimbustApproveAction'
 
-type ReimbusTypeWithAction = ReimbursmentResponType & {
-  action?: string
-}
 
 
 
@@ -40,7 +36,9 @@ const reimbusStatusObj: reimbusStatusType = {
 }
 
 
-export const ReimbursementColumn = (locale: Locale, handleAproved): ColumnDef<ReimbusTypeWithAction, any>[] => [
+const url = `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/reimbursement-ayu-nur-fadillah/reimbust`
+
+export const ReimbursementColumnApproveOrPending = (locale: Locale,): ColumnDef<ReimbursmentResponType, any>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -63,11 +61,12 @@ export const ReimbursementColumn = (locale: Locale, handleAproved): ColumnDef<Re
       />
     )
   },
+
   columnHelper.accessor('user.fullName', {
-    header: 'Product',
+    header: 'Reimbust',
     cell: ({ row }) => (
       <div className='flex items-center gap-4'>
-        <img src={row.original.invoiceImage} width={38} height={38} className='rounded bg-actionHover' />
+        <img src={`${url}/${row.original.id}/${row.original.invoiceImage}`} width={38} height={38} className='rounded bg-actionHover' />
         <div className='flex flex-col'>
           <Typography className='font-medium' color='text.primary'>
             {row.original.user.fullName}
@@ -109,9 +108,5 @@ export const ReimbursementColumn = (locale: Locale, handleAproved): ColumnDef<Re
       />
     )
   }),
-  columnHelper.accessor('action', {
-    header: 'Actions',
-    cell: ({ row }) => <ReimbustApproveAction row={row} />,
-    enableSorting: false
-  })
+
 ]
