@@ -23,11 +23,13 @@ import { useSettings } from '@core/hooks/useSettings'
 
 // Style Imports
 import navigationCustomStyles from '@core/styles/vertical/navigationCustomStyles'
-import { getDictionary } from '@/utils/getDictionary'
+import type { getDictionary } from '@/utils/getDictionary'
+import type { AuthPayload } from '@/libs/server-auth'
 
 type Props = {
   dictionary: Awaited<ReturnType<typeof getDictionary>>
-  mode: Mode
+  mode: Mode,
+  user: AuthPayload
 }
 
 const StyledBoxForShadow = styled('div')(({ theme }) => ({
@@ -49,7 +51,7 @@ const StyledBoxForShadow = styled('div')(({ theme }) => ({
 
 const Navigation = (props: Props) => {
   // Props
-  const { dictionary, mode } = props
+  const { dictionary, mode, user } = props
 
   // Hooks
   const verticalNavOptions = useVerticalNav()
@@ -122,7 +124,7 @@ const Navigation = (props: Props) => {
         )}
       </NavHeader>
       <StyledBoxForShadow ref={shadowRef} />
-      <VerticalMenu dictionary={dictionary} scrollMenu={scrollMenu} />
+      <VerticalMenu dictionary={dictionary} scrollMenu={scrollMenu} user={user} />
     </VerticalNav>
   )
 }
