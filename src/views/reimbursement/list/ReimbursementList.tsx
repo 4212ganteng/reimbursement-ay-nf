@@ -20,6 +20,8 @@ import { flexRender } from '@tanstack/react-table'
 import classnames from 'classnames'
 
 // Type Imports
+import type { Reimbursement } from '@prisma/client'
+
 import type { Locale } from '@configs/i18n'
 
 // Component Imports
@@ -36,9 +38,9 @@ import { DebouncedInput } from '@/utils/DebouncedInput'
 import tableStyles from '@core/styles/table.module.css'
 import { useReimbursementTable } from './useReimbursementTable'
 
-const ReimbursementList = ({ productData }: { productData?: UsersType[] }) => {
+const ReimbursementList = ({ reimbusData }: { reimbusData?: Reimbursement[] }) => {
   // States
-  const [filteredData, setFilteredData] = useState(productData || [])
+  const [filteredData, setFilteredData] = useState(reimbusData || [])
 
   // Hooks
   const { lang: locale } = useParams()
@@ -47,8 +49,8 @@ const ReimbursementList = ({ productData }: { productData?: UsersType[] }) => {
   return (
     <>
       <Card>
-        <CardHeader title='Filters' />
-        <TableFilters setData={setFilteredData} productData={productData} />
+        {/* <CardHeader title='Filters' />
+        <TableFilters setData={setFilteredData} productData={reimbusData} /> */}
         <Divider />
         <div className='flex flex-wrap justify-between gap-4 p-6'>
           <DebouncedInput
