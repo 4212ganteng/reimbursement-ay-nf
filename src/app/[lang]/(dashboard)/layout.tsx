@@ -1,4 +1,7 @@
 // MUI Imports
+
+import { redirect } from 'next/navigation'
+
 import Button from '@mui/material/Button'
 
 // Type Imports
@@ -42,7 +45,9 @@ const Layout = async (props: ChildrenType & { params: Promise<{ lang: Locale }> 
 
   const user = await serverAuth()
 
-  console.log('dari vertical menu', user)
+  if (!user) {
+    redirect('/login')
+  }
 
   return (
     <Providers direction={direction}>

@@ -22,7 +22,14 @@ import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 
 // Hook Imports
+import { useAtom, useAtomValue } from 'jotai'
+
+import { RESET } from 'jotai/utils'
+
 import { useSettings } from '@core/hooks/useSettings'
+import { authUser } from '@/jotai/authUser'
+import type { AuthPayload } from '@/libs/server-auth'
+import { LogoutAction } from '@/app/[lang]/(blank-layout-pages)/login/action'
 
 // Styled component for badge content
 const BadgeContentSpan = styled('span')({
@@ -35,6 +42,10 @@ const BadgeContentSpan = styled('span')({
 })
 
 const UserDropdown = () => {
+  const user = useAtomValue(authUser) as AuthPayload
+  const [logout, setLogout] = useAtom(authUser)
+
+
   // States
   const [open, setOpen] = useState(false)
 
@@ -63,8 +74,13 @@ const UserDropdown = () => {
   }
 
   const handleUserLogout = async () => {
+
+    await LogoutAction()
+
     // Redirect to login page
-    router.push('/login')
+    setLogout(RESET)
+
+    // router.push('/login')
   }
 
   return (
@@ -103,12 +119,12 @@ const UserDropdown = () => {
               <ClickAwayListener onClickAway={e => handleDropdownClose(e as MouseEvent | TouchEvent)}>
                 <MenuList>
                   <div className='flex items-center plb-2 pli-6 gap-2' tabIndex={-1}>
-                    <Avatar alt='John Doe' src='/images/avatars/1.png' />
+                    <Avatar alt='John Doe' src={user.avatarUrl ?? '/images/avatars/1.png'} />
                     <div className='flex items-start flex-col'>
                       <Typography className='font-medium' color='text.primary'>
-                        John Doe
+                        {user.fullName}
                       </Typography>
-                      <Typography variant='caption'>admin@vuexy.com</Typography>
+                      <Typography variant='caption'>{user.email}</Typography>
                     </div>
                   </div>
                   <Divider className='mlb-1' />
@@ -116,14 +132,11 @@ const UserDropdown = () => {
                     <i className='tabler-user' />
                     <Typography color='text.primary'>My Profile</Typography>
                   </MenuItem>
-                  <MenuItem className='mli-2 gap-3' onClick={e => handleDropdownClose(e)}>
+                  {/* <MenuItem className='mli-2 gap-3' onClick={e => handleDropdownClose(e)}>
                     <i className='tabler-settings' />
                     <Typography color='text.primary'>Settings</Typography>
-                  </MenuItem>
-                  <MenuItem className='mli-2 gap-3' onClick={e => handleDropdownClose(e)}>
-                    <i className='tabler-currency-dollar' />
-                    <Typography color='text.primary'>Pricing</Typography>
-                  </MenuItem>
+                  </MenuItem> */}
+
                   <MenuItem className='mli-2 gap-3' onClick={e => handleDropdownClose(e)}>
                     <i className='tabler-help-circle' />
                     <Typography color='text.primary'>FAQ</Typography>

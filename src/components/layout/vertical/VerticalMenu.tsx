@@ -10,7 +10,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import type { VerticalMenuContextProps } from '@menu/components/vertical-menu/Menu'
 
 // Component Imports
-import { Menu, MenuItem, SubMenu } from '@menu/vertical-menu'
+import { Menu } from '@menu/vertical-menu'
 
 // Hook Imports
 import useVerticalNav from '@menu/hooks/useVerticalNav'
@@ -19,11 +19,13 @@ import useVerticalNav from '@menu/hooks/useVerticalNav'
 import StyledVerticalNavExpandIcon from '@menu/styles/vertical/StyledVerticalNavExpandIcon'
 
 // Style Imports
+import FinanceRoute from '@/libs/roleBased/FinanceRoute'
+import GuestRoute from '@/libs/roleBased/GuestRoute copy'
+import StaffRoute from '@/libs/roleBased/StaffRoute'
+import type { AuthPayload } from '@/libs/server-auth'
 import type { getDictionary } from '@/utils/getDictionary'
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
-import type { AuthPayload } from '@/libs/server-auth'
-import ManagerRoute from '@/libs/roleBased/ManagerRoute'
 
 type RenderExpandIconProps = {
   open?: boolean
@@ -85,9 +87,23 @@ const VerticalMenu = ({ dictionary, scrollMenu, user }: Props) => {
       >
 
 
-        {user.Role === 'MANAGER' ? (
-          <ManagerRoute dictionary={dictionary} locale={locale} />
-        ) : null}
+        {user?.Role === 'MANAGER' ?
+          (
+            <FinanceRoute dictionary={dictionary} locale={locale} />
+          ) : (
+            user?.Role === 'FINANCE' ?
+              (
+                <FinanceRoute dictionary={dictionary} locale={locale} />
+              ) : (
+                user?.Role === 'STAFF' ?
+                  (
+                    <StaffRoute dictionary={dictionary} locale={locale} />
+                  ) : (
+                    <GuestRoute />
+                  )
+              )
+
+          )}
 
 
 

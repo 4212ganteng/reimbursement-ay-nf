@@ -22,9 +22,7 @@ const ManagerRoute = (props: Tmenu) => {
       <MenuItem href='/home' icon={<i className='tabler-smart-home' />}>
         Home
       </MenuItem>
-      <MenuItem href='/about' icon={<i className='tabler-info-circle' />}>
-        About
-      </MenuItem>
+
 
 
       <SubMenu label={dictionary['navigation'].user} icon={<i className='tabler-user' />}>
@@ -41,6 +39,11 @@ const ManagerRoute = (props: Tmenu) => {
         <MenuItem href={`/${locale}/apps/reimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
 
       </SubMenu>
+
+
+      <MenuItem href='/about' icon={<i className='tabler-info-circle' />}>
+        About
+      </MenuItem>
 
     </>
   )
