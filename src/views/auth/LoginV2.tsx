@@ -69,7 +69,7 @@ const MaskImg = styled('img')({
 
 const LoginV2 = ({ mode }: { mode: SystemMode }) => {
   const [state, formAction, pending] = useActionState(LoginAction, null)
-  const [data, setData] = useAtom(authUser)
+  const [, setData] = useAtom(authUser)
   const router = useRouter()
 
   useEffect(() => {
@@ -167,7 +167,7 @@ const LoginV2 = ({ mode }: { mode: SystemMode }) => {
             <CustomTextField
               fullWidth
               name='password'
-              defaultValue={state?.data.password}
+              defaultValue={""}
               label='Password'
               placeholder='············'
               type={isPasswordShown ? 'text' : 'password'}

@@ -1,5 +1,4 @@
-// Next Imports
-import { headers } from 'next/headers'
+
 
 
 // MUI Imports
@@ -36,7 +35,7 @@ const RootLayout = async (props: ChildrenType & { params: Promise<{ lang: Locale
   const { children } = props
 
   // Vars
-  const headersList = await headers()
+  // const headersList = await headers()
   const systemMode = await getSystemMode()
   const direction = i18n.langDirection[params.lang]
 

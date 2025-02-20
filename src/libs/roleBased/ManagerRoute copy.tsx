@@ -1,13 +1,12 @@
 
 
 // Component Imports
-import type { Locale } from '@/configs/i18n'
 import type { getDictionary } from '@/utils/getDictionary'
 import { MenuItem, SubMenu } from '@menu/vertical-menu'
 
 
 type Tmenu = {
-  locale: Locale,
+  locale: string | string[] | undefined,
   dictionary: Awaited<ReturnType<typeof getDictionary>>
 }
 

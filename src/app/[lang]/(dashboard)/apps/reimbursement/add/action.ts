@@ -25,75 +25,75 @@ const ReimbursementSchema = z.object({
 })
 
 export async function submitReimbursementAction(prevstate: unknown, formData: FormData): Promise<ActionResponse> {
-  try {
-    const rawFormData = {
-      reimbursmentImage: formData.get('reimbursementImage'),
-      date: formData.get('date'),
-      price: Number(formData.get('price')),
-      description: formData.get('description') as string
+  const rawFormData = {
+    reimbursmentImage: formData.get('reimbursementImage'),
+    date: formData.get('date'),
+    price: Number(formData.get('price')),
+    description: formData.get('description') as string
+  }
+
+  console.log({ rawFormData })
+  const validatedData = ReimbursementSchema.safeParse(rawFormData)
+
+  console.log({ validatedData })
+
+  if (!validatedData.success) {
+    return {
+      success: false,
+      errors: validatedData.error.flatten().fieldErrors,
+      message: 'Validation failed',
+      data: validatedData.error.errors
     }
+  }
 
-    console.log({ rawFormData })
-    const validatedData = ReimbursementSchema.safeParse(rawFormData)
+  const userId = await serverAuth()
 
-    console.log({ validatedData })
+  console.log({ userId })
 
-    if (!validatedData.success) {
-      return {
-        success: false,
-        errors: validatedData.error.flatten().fieldErrors,
-        message: 'Validation failed',
-        data: validatedData.error.errors
-      }
+  if (!userId) {
+    return {
+      success: false,
+      message: 'Unauthorized: User not authenticated'
     }
+  }
 
-    const userId = await serverAuth()
+  const newReimbursement = await reimbursementService.createReimbursement({
+    description: validatedData.data.description ?? null,
+    invoiceImage: validatedData.data.reimbursmentImage.name,
+    price: validatedData.data.price,
+    date: validatedData.data.date,
+    userId: userId.id,
+    status: 'PENDING'
+  })
 
-    console.log({ userId })
+  console.log({ newReimbursement })
 
-    if (!userId) {
-      return {
-        success: false,
-        message: 'Unauthorized: User not authenticated'
-      }
+  if (!newReimbursement) {
+    return {
+      success: false,
+      message: 'Error creating reimbursement'
     }
+  }
 
-    const newReimbursement = await reimbursementService.createReimbursement({
-      description: validatedData.data.description ?? null,
-      invoiceImage: validatedData.data.reimbursmentImage.name,
-      price: validatedData.data.price,
-      date: validatedData.data.date,
-      userId: userId.id,
-      status: 'PENDING'
-    })
+  console.log('aman si')
 
-    console.log({ newReimbursement })
+  // Process file uploads if any
+  const upFile = await uploadFile({
+    key: newReimbursement.invoiceImage,
+    body: validatedData.data.reimbursmentImage,
+    folder: `reimbust/${newReimbursement.id}`
+  })
 
-    if (!newReimbursement) {
-      return {
-        success: false,
-        message: 'Error creating reimbursement'
-      }
-    }
-
-    console.log('aman si')
-
-    // Process file uploads if any
-    await uploadFile({
-      key: newReimbursement.invoiceImage,
-      body: validatedData.data.reimbursmentImage,
-      folder: `reimbust/${newReimbursement.id}`
-    })
-
-    // Redirect on success
-    redirect('/reimbursement')
-  } catch (error) {
-    console.error('Reimbursement submission error:', error)
+  if (!(newReimbursement && upFile)) {
+    console.log('error cuy')
 
     return {
       success: false,
       message: 'Failed to submit reimbursement',
-      data: error instanceof Error ? error.message : 'Unknown error occurred'
+      data: 'Unknown error occurred'
     }
   }
+
+  // Redirect on success
+  redirect('/en/apps/reimbursement/list/all-status')
 }

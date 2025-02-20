@@ -43,7 +43,7 @@ const BadgeContentSpan = styled('span')({
 
 const UserDropdown = () => {
   const user = useAtomValue(authUser) as AuthPayload
-  const [logout, setLogout] = useAtom(authUser)
+  const [, setLogout] = useAtom(authUser)
 
 
   // States

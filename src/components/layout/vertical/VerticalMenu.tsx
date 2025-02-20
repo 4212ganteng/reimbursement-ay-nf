@@ -26,6 +26,7 @@ import type { AuthPayload } from '@/libs/server-auth'
 import type { getDictionary } from '@/utils/getDictionary'
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
+import ManagerRoute from '@/libs/roleBased/ManagerRoute copy'
 
 type RenderExpandIconProps = {
   open?: boolean
@@ -89,7 +90,7 @@ const VerticalMenu = ({ dictionary, scrollMenu, user }: Props) => {
 
         {user?.Role === 'MANAGER' ?
           (
-            <FinanceRoute dictionary={dictionary} locale={locale} />
+            <ManagerRoute dictionary={dictionary} locale={locale} />
           ) : (
             user?.Role === 'FINANCE' ?
               (
