@@ -23,8 +23,8 @@ const StaffRoute = (props: Tmenu) => {
       </MenuItem>
 
       <SubMenu label={dictionary['navigation'].reimbursement} icon={<i className='tabler-shopping-cart' />}>
-        <MenuItem href={`/${locale}/apps/reimbursement/list/all-status`}>{dictionary['navigation'].list}</MenuItem>
-        <MenuItem href={`/${locale}/apps/reimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
+        <MenuItem href={`/${locale}/apps/staff/reimbursement/list`}>{dictionary['navigation'].list}</MenuItem>
+        <MenuItem href={`/${locale}/apps/staff/reimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
       </SubMenu>
 
       <MenuItem href='/about' icon={<i className='tabler-info-circle' />}>

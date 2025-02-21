@@ -1,7 +1,6 @@
 'use client'
 
 // React Imports
-import { useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
@@ -36,12 +35,10 @@ import tableStyles from '@core/styles/table.module.css'
 import { useReimbursementTable } from './useReimbursementTable'
 
 const ReimbursementList = ({ reimbusData }: { reimbusData?: Reimbursement[] }) => {
-  // States
-  const [filteredData, setFilteredData] = useState(reimbusData || [])
 
   // Hooks
   const { lang: locale } = useParams()
-  const { table, globalFilter, setGlobalFilter } = useReimbursementTable(filteredData, locale as Locale)
+  const { table, globalFilter, setGlobalFilter } = useReimbursementTable(reimbusData || [])
 
   return (
     <>

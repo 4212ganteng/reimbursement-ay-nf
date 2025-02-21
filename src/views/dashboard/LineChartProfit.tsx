@@ -17,7 +17,7 @@ import type { ApexOptions } from 'apexcharts'
 const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexCharts'))
 
 // Vars
-const series = [{ data: [0, 19, 7, 27, 15, 40, 55, 55, 55, 44, 44, 44, 11, 1, 4, , 8, 5, 200, 1, 250, 300] }]
+const series = [{ data: [0, 19, 7, 27, 15, 40, 55, 55, 55, 44, 44, 44, 11, 1, 4, 5, 8, 5, 200, 1, 250, 300] }]
 
 const LineChartProfit = () => {
   // Hooks

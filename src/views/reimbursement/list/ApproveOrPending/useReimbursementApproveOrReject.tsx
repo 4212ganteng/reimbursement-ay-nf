@@ -4,7 +4,6 @@ import type { Reimbursement } from '@prisma/client'
 
 import { getCoreRowModel, getFacetedMinMaxValues, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 
-import type { Locale } from '@/configs/i18n'
 
 import { fuzzyFilter } from '@/utils/FuzyFilter'
 import { ReimbursementColumnApproveOrPending } from './ReimbursementColumnApproveOrPending'
@@ -14,14 +13,14 @@ type ReimbustTypeWithAction = Reimbursement & {
   action?: string
 }
 
-export const useReimbursementApproveOrReject = (data: ReimbustTypeWithAction[], locale: Locale) => {
+export const useReimbursementApproveOrReject = (data: ReimbustTypeWithAction[]) => {
   const [rowSelection, setRowSelection] = useState({})
   const [globalFilter, setGlobalFilter] = useState('')
 
 
   const table = useReactTable({
     data,
-    columns: ReimbursementColumnApproveOrPending(locale),
+    columns: ReimbursementColumnApproveOrPending(),
     filterFns: {
       fuzzy: fuzzyFilter
     },

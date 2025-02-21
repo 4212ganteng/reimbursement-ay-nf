@@ -20,13 +20,13 @@ import StyledVerticalNavExpandIcon from '@menu/styles/vertical/StyledVerticalNav
 
 // Style Imports
 import FinanceRoute from '@/libs/roleBased/FinanceRoute'
-import GuestRoute from '@/libs/roleBased/GuestRoute copy'
+import GuestRoute from '@/libs/roleBased/GuestRoute'
 import StaffRoute from '@/libs/roleBased/StaffRoute'
 import type { AuthPayload } from '@/libs/server-auth'
 import type { getDictionary } from '@/utils/getDictionary'
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
-import ManagerRoute from '@/libs/roleBased/ManagerRoute copy'
+import ManagerRoute from '@/libs/roleBased/ManagerRoute'
 
 type RenderExpandIconProps = {
   open?: boolean

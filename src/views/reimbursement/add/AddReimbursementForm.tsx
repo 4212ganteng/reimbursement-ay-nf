@@ -25,32 +25,7 @@ const AddReimbursementForm = ({ authData }: { authData: AuthPayload }) => {
   })
 
 
-  console.log({ state })
 
-  // const handleRemoveFile = (file: FileProp) => {
-  //   const filtered = reimbursementImage.filter((i: FileProp) => i.name !== file.name)
-
-  //   setReimbursement([...filtered])
-  // }
-
-  // const handleRemoveAllFiles = () => {
-  //   setReimbursement([])
-  // }
-
-
-
-  const handleSubmit = async (formData: FormData) => {
-
-    // Append files if any
-    reimbursementImage.forEach(fileReimbust => {
-      formData.append('reimbursementImage', fileReimbust)
-    })
-
-
-
-    // Call the server action
-    return formAction(formData)
-  }
 
   const img = reimbursementImage.map((file: FileProp) => (
     <img key={file.name} alt={file.name} className='single-file-image' src={URL.createObjectURL(file as any)} />

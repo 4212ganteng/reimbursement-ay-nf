@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-as-const */
 'use client'
 
 import { useState } from 'react'
@@ -51,13 +52,13 @@ export const ReimbustApproveAction = ({ row }: { row: any }) => {
     approve: {
       title: 'Confirm Reimbursement Approval',
       content: `Are you sure you want to approve this reimbursement request from ${row.original.user.fullName}? Amount: $${row.original.price}`,
-      buttonColor: 'success',
+      buttonColor: 'success' as 'success',
       buttonText: 'Approve'
     },
     reject: {
       title: 'Confirm Reimbursement Rejection',
       content: `Are you sure you want to reject this reimbursement request from ${row.original.user.fullName}? Amount: $${row.original.price}`,
-      buttonColor: 'error',
+      buttonColor: 'error' as 'error',
       buttonText: 'Reject'
     }
   }
@@ -106,6 +107,7 @@ export const ReimbustApproveAction = ({ row }: { row: any }) => {
             >
               Cancel
             </Button>
+
             <Button
               onClick={handleAction}
               variant="contained"

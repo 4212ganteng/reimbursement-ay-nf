@@ -5,7 +5,6 @@ import { Checkbox, Chip, Typography } from '@mui/material'
 
 
 
-import type { Locale } from '@configs/i18n'
 
 const columnHelper = createColumnHelper<ReimbursmentResponType>()
 
@@ -38,7 +37,7 @@ const reimbusStatusObj: reimbusStatusType = {
 
 const url = `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/reimbursement-ayu-nur-fadillah/reimbust`
 
-export const ReimbursementColumnApproveOrPending = (locale: Locale,): ColumnDef<ReimbursmentResponType, any>[] => [
+export const ReimbursementColumnApproveOrPending = (): ColumnDef<ReimbursmentResponType, any>[] => [
   {
     id: 'select',
     header: ({ table }) => (

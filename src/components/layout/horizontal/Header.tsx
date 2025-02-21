@@ -8,7 +8,7 @@ import LayoutHeader from '@layouts/components/horizontal/Header'
 
 // Hook Imports
 import useHorizontalNav from '@menu/hooks/useHorizontalNav'
-import { getDictionary } from '@/utils/getDictionary'
+import type { getDictionary } from '@/utils/getDictionary'
 
 const Header = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof getDictionary>> }) => {
   // Hooks

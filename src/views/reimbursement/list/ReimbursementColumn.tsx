@@ -5,7 +5,6 @@ import { Checkbox, Chip, Typography } from '@mui/material'
 
 
 
-import type { Locale } from '@configs/i18n'
 
 const columnHelper = createColumnHelper<ReimbusTypeWithAction>()
 
@@ -21,17 +20,12 @@ type ReimbusTypeWithAction = ReimbursmentResponType & {
 }
 
 
-
-
 type reimbusStatusType = {
   [key: string]: {
     title: string
     color: ThemeColor
   }
 }
-
-// Vars
-
 
 const reimbusStatusObj: reimbusStatusType = {
   PENDING: { title: 'PENDING', color: 'warning' },
@@ -40,7 +34,7 @@ const reimbusStatusObj: reimbusStatusType = {
 }
 
 
-export const ReimbursementColumn = (locale: Locale, handleAproved): ColumnDef<ReimbusTypeWithAction, any>[] => [
+export const ReimbursementColumn = (): ColumnDef<ReimbusTypeWithAction, any>[] => [
   {
     id: 'select',
     header: ({ table }) => (

@@ -24,7 +24,7 @@ import CustomTextField from '@core/components/mui/TextField'
 import tableStyles from '@core/styles/table.module.css'
 
 // import { TableFilters } from './TableFilters'
-import { RegisterUserAction } from '@/app/[lang]/(dashboard)/apps/(auth)/user/action'
+import { RegisterUserAction } from '@/app/[lang]/(dashboard)/manager/(auth)/user/action'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import type { Locale } from '@/configs/i18n'
 import { DebouncedInput } from '@/utils/DebouncedInput'

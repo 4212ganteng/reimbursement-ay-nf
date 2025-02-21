@@ -1,7 +1,6 @@
 'use client'
 
 // React Imports
-import { useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
@@ -37,12 +36,11 @@ import { useReimbursementApproveOrReject } from './useReimbursementApproveOrReje
 
 
 const ReimbursementListApproveOrReject = ({ reimbusData }: { reimbusData?: Reimbursement[] }) => {
-  // States
-  const [filteredData, setFilteredData] = useState(reimbusData || [])
+
 
   // Hooks
   const { lang: locale } = useParams()
-  const { table, globalFilter, setGlobalFilter } = useReimbursementApproveOrReject(filteredData, locale as Locale)
+  const { table, globalFilter, setGlobalFilter } = useReimbursementApproveOrReject(reimbusData || [])
 
   return (
     <>
