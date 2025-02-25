@@ -100,11 +100,11 @@ const HorizontalMenu = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof 
 
 
         <SubMenu label={dictionary['navigation'].reimbursement} icon={<i className='tabler-shopping-cart' />}>
-          <MenuItem href={`/${locale}/appsreimbursement/list`}>{dictionary['navigation'].list}</MenuItem>
-          <MenuItem href={`/${locale}/appsreimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
-          <MenuItem href={`/${locale}/appsreimbursement/category`}>
-            {dictionary['navigation'].category}
-          </MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/list`}>{dictionary['navigation'].pending}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/list/approved`}>{dictionary['navigation'].approved}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/list/rejected`}>{dictionary['navigation'].rejected}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/list/all-status`}>{dictionary['navigation'].list}</MenuItem>
+          <MenuItem href={`/${locale}/apps/reimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
         </SubMenu>
 
 

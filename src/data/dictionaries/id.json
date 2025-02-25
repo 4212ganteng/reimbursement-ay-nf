@@ -103,6 +103,9 @@
     "disabledMenu": "Menu Dinonaktifkan",
     "about": "Tentang",
     "home": "Beranda",
-    "reimbursement": "Penggantian Biaya"
+    "reimbursement": "Penggantian Biaya",
+    "approved": "Disetujui",
+    "rejected": "Ditolak",
+    "pending": "Tertunda"
   }
 }

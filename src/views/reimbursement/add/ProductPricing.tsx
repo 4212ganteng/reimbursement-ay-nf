@@ -1,12 +1,7 @@
 // MUI Imports
 import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
-import Checkbox from '@mui/material/Checkbox'
-import Divider from '@mui/material/Divider'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
-import Typography from '@mui/material/Typography'
+import CardHeader from '@mui/material/CardHeader'
 
 // Component Imports
 import Form from '@components/Form'
@@ -20,12 +15,7 @@ const ProductPricing = () => {
         <Form>
           <CustomTextField fullWidth label='Purposes' placeholder='Input needs' className='mbe-6' />
           <CustomTextField fullWidth label='Total Price' placeholder='$499' className='mbe-6' />
-          {/* <FormControlLabel control={<Checkbox defaultChecked />} label='Charge tax on this product' />
-          <Divider className='mlb-2' />
-          <div className='flex items-center justify-between'>
-            <Typography>In stock</Typography>
-            <Switch defaultChecked />
-          </div> */}
+
         </Form>
       </CardContent>
     </Card>

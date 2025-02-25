@@ -1,13 +1,14 @@
 'use client'
 
 // React Imports
-import { useActionState, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 // MUI Imports
+
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -19,6 +20,12 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import classnames from 'classnames'
 
 // Type Imports
+
+
+
+import { useAtom } from 'jotai'
+
+
 import type { Locale } from '@configs/i18n'
 import type { SystemMode } from '@core/types'
 
@@ -32,7 +39,9 @@ import { useSettings } from '@core/hooks/useSettings'
 
 // Util Imports
 import { LoginAction } from '@/app/[lang]/(blank-layout-pages)/login/action'
+import { authUser } from '@/jotai/authUser'
 import { getLocalizedUrl } from '@/utils/i18n'
+
 
 // Styled Custom Components
 const RegisterIllustration = styled('img')(({ theme }) => ({
@@ -60,8 +69,26 @@ const MaskImg = styled('img')({
 
 const LoginV2 = ({ mode }: { mode: SystemMode }) => {
   const [state, formAction, pending] = useActionState(LoginAction, null)
+  const [, setData] = useAtom(authUser)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (state?.success) {
+      setData(state.data)
+
+      router.push('/home')
+    }
+  }, [state])
+
+
 
   console.log(state)
+
+  // if (state?.success) {
+  //   setData(state.data)
+
+  //   toast.success(state.message)
+  // }
 
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
@@ -140,7 +167,7 @@ const LoginV2 = ({ mode }: { mode: SystemMode }) => {
             <CustomTextField
               fullWidth
               name='password'
-              defaultValue={state?.data.password}
+              defaultValue={""}
               label='Password'
               placeholder='············'
               type={isPasswordShown ? 'text' : 'password'}

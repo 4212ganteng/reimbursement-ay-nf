@@ -7,6 +7,10 @@ import { Checkbox, Chip, IconButton, Typography } from '@mui/material'
 
 import type { User } from '@prisma/client'
 
+import type { OverridableStringUnion } from '@mui/types';
+
+import type { ChipPropsColorOverrides } from '@mui/material/Chip';
+
 import type { Locale } from '@configs/i18n'
 
 
@@ -34,7 +38,8 @@ const userRoleObj = {
   FINANCE: { icon: 'tabler-user', color: 'primary' }
 }
 
-const userStatusObj = {
+
+const userStatusObj: Record<string, OverridableStringUnion<'default' | 'error' | 'success' | 'primary' | 'warning' | 'secondary' | 'info', ChipPropsColorOverrides>> = {
   ACTIVE: 'success',
   PENDING: 'warning',
   INACTIVE: 'secondary'
@@ -77,7 +82,7 @@ export const userColumns = (locale: Locale): ColumnDef<UsersTypeWithAction, any>
     header: 'User',
     cell: ({ row }) => (
       <div className='flex items-center gap-4'>
-        {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })}
+        {getAvatar({ avatar: row.original.avatarUrl || '', fullName: row.original.fullName })}
         <div className='flex flex-col'>
           <Typography color='text.primary' className='font-medium capitalize'>
             {row.original.fullName}

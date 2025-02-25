@@ -14,7 +14,7 @@ import useHorizontalNav from '@menu/hooks/useHorizontalNav'
 
 // Util Imports
 import { horizontalLayoutClasses } from '@layouts/utils/layoutClasses'
-import { getDictionary } from '@/utils/getDictionary'
+import type { getDictionary } from '@/utils/getDictionary'
 
 type StyledDivProps = {
   isContentCompact: boolean

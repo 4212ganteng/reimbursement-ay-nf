@@ -81,5 +81,17 @@ export async function LoginAction(prevState: unknown, formData: FormData) {
     path: '/'
   })
 
-  redirect('/en/apps/home')
+  return {
+    success: true,
+    message: 'Welcome Back!',
+    data: payload
+  }
+}
+
+export async function LogoutAction() {
+  const cookieStore = await cookies()
+
+  cookieStore.delete('token')
+
+  redirect('/login')
 }

@@ -1,7 +1,6 @@
 'use client'
 
 // React Imports
-import { useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
@@ -10,7 +9,6 @@ import { useParams } from 'next/navigation'
 // MUI Imports
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
 import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import TablePagination from '@mui/material/TablePagination'
@@ -27,24 +25,20 @@ import type { Locale } from '@configs/i18n'
 // Component Imports
 import TablePaginationComponent from '@components/TablePaginationComponent'
 import CustomTextField from '@core/components/mui/TextField'
-import TableFilters from './TableFilters'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
 
 // Style Imports
-import type { UsersType } from '@/types/userTypes'
 import { DebouncedInput } from '@/utils/DebouncedInput'
 import tableStyles from '@core/styles/table.module.css'
 import { useReimbursementTable } from './useReimbursementTable'
 
 const ReimbursementList = ({ reimbusData }: { reimbusData?: Reimbursement[] }) => {
-  // States
-  const [filteredData, setFilteredData] = useState(reimbusData || [])
 
   // Hooks
   const { lang: locale } = useParams()
-  const { table, globalFilter, setGlobalFilter } = useReimbursementTable(filteredData, locale as Locale)
+  const { table, globalFilter, setGlobalFilter } = useReimbursementTable(reimbusData || [])
 
   return (
     <>
@@ -159,3 +153,5 @@ const ReimbursementList = ({ reimbusData }: { reimbusData?: Reimbursement[] }) =
 }
 
 export default ReimbursementList
+
+

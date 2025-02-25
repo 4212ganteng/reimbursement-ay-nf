@@ -10,7 +10,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import type { VerticalMenuContextProps } from '@menu/components/vertical-menu/Menu'
 
 // Component Imports
-import { Menu, MenuItem, SubMenu } from '@menu/vertical-menu'
+import { Menu } from '@menu/vertical-menu'
 
 // Hook Imports
 import useVerticalNav from '@menu/hooks/useVerticalNav'
@@ -19,9 +19,14 @@ import useVerticalNav from '@menu/hooks/useVerticalNav'
 import StyledVerticalNavExpandIcon from '@menu/styles/vertical/StyledVerticalNavExpandIcon'
 
 // Style Imports
+import FinanceRoute from '@/libs/roleBased/FinanceRoute'
+import GuestRoute from '@/libs/roleBased/GuestRoute'
+import StaffRoute from '@/libs/roleBased/StaffRoute'
+import type { AuthPayload } from '@/libs/server-auth'
+import type { getDictionary } from '@/utils/getDictionary'
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
-import type { getDictionary } from '@/utils/getDictionary'
+import ManagerRoute from '@/libs/roleBased/ManagerRoute'
 
 type RenderExpandIconProps = {
   open?: boolean
@@ -30,7 +35,8 @@ type RenderExpandIconProps = {
 
 type Props = {
   dictionary: Awaited<ReturnType<typeof getDictionary>>
-  scrollMenu: (container: any, isPerfectScrollbar: boolean) => void
+  scrollMenu: (container: any, isPerfectScrollbar: boolean) => void,
+  user: AuthPayload
 }
 
 const RenderExpandIcon = ({ open, transitionDuration }: RenderExpandIconProps) => (
@@ -39,7 +45,7 @@ const RenderExpandIcon = ({ open, transitionDuration }: RenderExpandIconProps) =
   </StyledVerticalNavExpandIcon>
 )
 
-const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
+const VerticalMenu = ({ dictionary, scrollMenu, user }: Props) => {
   // Hooks
   const theme = useTheme()
   const verticalNavOptions = useVerticalNav()
@@ -51,6 +57,8 @@ const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
 
 
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
+
+  console.log("user dari vertical menu", user)
 
   return (
     // eslint-disable-next-line lines-around-comment
@@ -68,6 +76,9 @@ const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
     >
       {/* Incase you also want to scroll NavHeader to scroll with Vertical Menu, remove NavHeader from above and paste it below this comment */}
       {/* Vertical Menu */}
+
+
+
       <Menu
         popoutMenuOffset={{ mainAxis: 23 }}
         menuItemStyles={menuItemStyles(verticalNavOptions, theme)}
@@ -75,32 +86,33 @@ const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
         renderExpandedMenuItemIcon={{ icon: <i className='tabler-circle text-xs' /> }}
         menuSectionStyles={menuSectionStyles(verticalNavOptions, theme)}
       >
-        <MenuItem href='/home' icon={<i className='tabler-smart-home' />}>
-          Home
-        </MenuItem>
-        <MenuItem href='/about' icon={<i className='tabler-info-circle' />}>
-          About
-        </MenuItem>
 
 
-        <SubMenu label={dictionary['navigation'].user} icon={<i className='tabler-user' />}>
-          <MenuItem href={`/${locale}/apps/user`}>{dictionary['navigation'].list}</MenuItem>
-          <MenuItem href={`/${locale}/apps/user/view`}>{dictionary['navigation'].view}</MenuItem>
-        </SubMenu>
+        {user?.Role === 'MANAGER' ?
+          (
+            <ManagerRoute dictionary={dictionary} locale={locale} />
+          ) : (
+            user?.Role === 'FINANCE' ?
+              (
+                <FinanceRoute dictionary={dictionary} locale={locale} />
+              ) : (
+                user?.Role === 'STAFF' ?
+                  (
+                    <StaffRoute dictionary={dictionary} locale={locale} />
+                  ) : (
+                    <GuestRoute />
+                  )
+              )
 
-
-        <SubMenu label={dictionary['navigation'].reimbursement} icon={<i className='tabler-shopping-cart' />}>
-          <MenuItem href={`/${locale}/apps/reimbursement/list`}>{dictionary['navigation'].list}</MenuItem>
-          <MenuItem href={`/${locale}/apps/reimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
-          <MenuItem href={`/${locale}/apps/reimbursement/category`}>
-            {dictionary['navigation'].category}
-          </MenuItem>
-        </SubMenu>
-
+          )}
 
 
 
       </Menu>
+
+
+
+
 
 
       {/* <Menu

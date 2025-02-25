@@ -1,19 +1,14 @@
 
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table'
 
-import { Checkbox, Chip, IconButton, Switch, Typography } from '@mui/material'
-
-import classnames from 'classnames'
-import type { User } from '@prisma/client'
+import { Checkbox, Chip, Typography } from '@mui/material'
 
 
-import type { Locale } from '@configs/i18n'
+
 
 const columnHelper = createColumnHelper<ReimbusTypeWithAction>()
 
 
-import CustomAvatar from '@core/components/mui/Avatar'
-import OptionMenu from '@core/components/option-menu'
 
 
 import type { ThemeColor } from '@/@core/types'
@@ -25,17 +20,12 @@ type ReimbusTypeWithAction = ReimbursmentResponType & {
 }
 
 
-
-
 type reimbusStatusType = {
   [key: string]: {
     title: string
     color: ThemeColor
   }
 }
-
-// Vars
-
 
 const reimbusStatusObj: reimbusStatusType = {
   PENDING: { title: 'PENDING', color: 'warning' },
@@ -44,7 +34,7 @@ const reimbusStatusObj: reimbusStatusType = {
 }
 
 
-export const ReimbursementColumn = (locale: Locale, handleAproved): ColumnDef<ReimbusTypeWithAction, any>[] => [
+export const ReimbursementColumn = (): ColumnDef<ReimbusTypeWithAction, any>[] => [
   {
     id: 'select',
     header: ({ table }) => (

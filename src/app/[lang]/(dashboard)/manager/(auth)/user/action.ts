@@ -1,5 +1,4 @@
 'use server'
-import { revalidatePath } from 'next/cache'
 
 import { redirect } from 'next/navigation'
 
@@ -26,6 +25,7 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
   const password = formdata.get('password') as string
   const role = formdata.get('role') as Role
   const status = formdata.get('status') as Status
+  const avatarUrl = formdata.get('avatarUrl') as string | null
   const contact = Number(formdata.get('contact'))
 
   console.log('p')
@@ -69,6 +69,7 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
     password: hashPassword,
     role,
     status,
+    avatarUrl,
     contact
   })
 

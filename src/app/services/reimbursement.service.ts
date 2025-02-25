@@ -39,8 +39,74 @@ export const reimbursementService = {
     return data
   },
 
+  getRejectedReimbustmen: async () => {
+    const data = await prisma.reimbursement.findMany({
+      where: {
+        status: 'REJECTED'
+      },
+      include: {
+        user: {
+          select: {
+            fullName: true,
+            role: true,
+            contact: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    return data
+  },
+  getApprovedReimbustmen: async () => {
+    const data = await prisma.reimbursement.findMany({
+      where: {
+        status: 'APPROVED'
+      },
+      include: {
+        user: {
+          select: {
+            fullName: true,
+            role: true,
+            contact: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    return data
+  },
+  getPendingReimbustmen: async () => {
+    const data = await prisma.reimbursement.findMany({
+      where: {
+        status: 'PENDING'
+      },
+      include: {
+        user: {
+          select: {
+            fullName: true,
+            role: true,
+            contact: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    return data
+  },
+
   rejectReimbursement: async (idOrSlug: string) => {
-    const rejectedReimbursement = await prisma.reimbursement.update({
+    console.log({ idOrSlug })
+
+    const rejected = await prisma.reimbursement.update({
       where: {
         id: idOrSlug
       },
@@ -49,21 +115,25 @@ export const reimbursementService = {
       }
     })
 
-    return rejectedReimbursement
+    console.log({ rejected })
+
+    return rejected
   },
   approveReimbursement: async (idOrSlug: string) => {
     console.log('aw, im hitted')
     console.log({ idOrSlug })
 
-    // const approveReimbursement = await prisma.reimbursement.update({
-    //   where: {
-    //     id: idOrSlug
-    //   },
-    //   data: {
-    //     status: 'APPROVED'
-    //   }
-    // })
+    const approved = await prisma.reimbursement.update({
+      where: {
+        id: idOrSlug
+      },
+      data: {
+        status: 'APPROVED'
+      }
+    })
 
-    // return approveReimbursement
+    console.log({ approved })
+
+    return approved
   }
 }
