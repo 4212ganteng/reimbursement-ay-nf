@@ -18,44 +18,17 @@ import CustomAvatar from '@core/components/mui/Avatar'
 
 type DataType = {
   title: string
-  value: string
+  value: number
   icon: string
-  desc: string
+  desc: number
   change?: number
 }
 
 // Vars
-const data: DataType[] = [
-  {
-    title: 'In-Store Sales',
-    value: '$5,345',
-    icon: 'tabler-smart-home',
-    desc: '5k',
-    change: 5.7
-  },
-  {
-    title: 'Website Sales',
-    value: '$74,347',
-    icon: 'tabler-device-laptop',
-    desc: '21k',
-    change: 12.4
-  },
-  {
-    title: 'Discount',
-    value: '$14,235',
-    icon: 'tabler-gift',
-    desc: '6k'
-  },
-  {
-    title: 'Affiliate',
-    value: '$8,345',
-    icon: 'tabler-wallet',
-    desc: '150',
-    change: -3.5
-  }
-]
 
-const ProductCard = () => {
+
+
+const ProductCard = ({ data }: { data: DataType[] }) => {
   // Hooks
   const isBelowMdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'))
   const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
@@ -85,7 +58,7 @@ const ProductCard = () => {
                 </div>
                 {item.change ? (
                   <div className='flex items-center gap-2'>
-                    <Typography>{`${item.desc} orders`}</Typography>
+                    <Typography>{`${item.desc} submissions`}</Typography>
                     <Chip
                       variant='tonal'
                       label={`${item.change}%`}
@@ -94,7 +67,7 @@ const ProductCard = () => {
                     />
                   </div>
                 ) : (
-                  <Typography>{`${item.desc} orders`}</Typography>
+                  <Typography>{`${item.desc} submissions`}</Typography>
                 )}
               </div>
               {isBelowMdScreen && !isSmallScreen && index < data.length - 2 && (

@@ -23,10 +23,10 @@ const FinanceRoute = (props: Tmenu) => {
       </MenuItem>
 
       <SubMenu label={dictionary['navigation'].reimbursement} icon={<i className='tabler-shopping-cart' />}>
-        <MenuItem href={`/${locale}/apps/finance/reimbursement/list/approved`}>{dictionary['navigation'].approved}</MenuItem>
-        <MenuItem href={`/${locale}/apps/finance/reimbursement/list/rejected`}>{dictionary['navigation'].rejected}</MenuItem>
-        <MenuItem href={`/${locale}/apps/finance/reimbursement/list`}>{dictionary['navigation'].list}</MenuItem>
-        <MenuItem href={`/${locale}/apps/finance/reimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
+        <MenuItem href={`/${locale}/finance/reimbursement/list/approved`}>{dictionary['navigation'].approved}</MenuItem>
+        <MenuItem href={`/${locale}/finance/reimbursement/list/rejected`}>{dictionary['navigation'].rejected}</MenuItem>
+        <MenuItem href={`/${locale}/finance/reimbursement/list`}>{dictionary['navigation'].list}</MenuItem>
+        <MenuItem href={`/${locale}/finance/reimbursement/add`}>{dictionary['navigation'].add}</MenuItem>
       </SubMenu>
 
       <MenuItem href='/about' icon={<i className='tabler-info-circle' />}>

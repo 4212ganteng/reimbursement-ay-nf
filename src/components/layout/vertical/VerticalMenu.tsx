@@ -58,7 +58,6 @@ const VerticalMenu = ({ dictionary, scrollMenu, user }: Props) => {
 
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
 
-  console.log("user dari vertical menu", user)
 
   return (
     // eslint-disable-next-line lines-around-comment

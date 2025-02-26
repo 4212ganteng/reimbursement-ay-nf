@@ -3,11 +3,13 @@
 import type { Reimbursement } from '@prisma/client'
 
 import { reimbursementService } from '@/app/services/reimbursement.service'
+import { UserService } from '@/app/services/user.service'
 
 export async function DashboarRdManager() {
   const approved = await reimbursementService.getApprovedReimbustmen()
   const pending = await reimbursementService.getPendingReimbustmen()
   const rejected = await reimbursementService.getRejectedReimbustmen()
+  const users = await UserService.getAllUsers()
 
   const totalReimbustmen = approved.length + pending.length + rejected.length
 
@@ -32,7 +34,8 @@ export async function DashboarRdManager() {
     rejected,
     totalReimbustmen,
     series,
-    seriesPerMonth
+    seriesPerMonth,
+    totUser: users.length
   })
 
   return {
@@ -41,7 +44,8 @@ export async function DashboarRdManager() {
     rejected,
     totalReimbustmen,
     series,
-    seriesPerMonth
+    seriesPerMonth,
+    totUser: users.length
   }
 }
 
