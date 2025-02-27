@@ -13,11 +13,9 @@ import { DashboarRdManager } from '@/server/reimbursement'
 
 
 
-const EcommerceDashboard = async () => {
+const HomeDashboard = async () => {
   // Vars
   const data = await DashboarRdManager()
-
-  console.log({ data })
 
 
   const dataStatisticCard: DataType[] = [
@@ -77,4 +75,4 @@ const EcommerceDashboard = async () => {
   )
 }
 
-export default EcommerceDashboard
+export default HomeDashboard

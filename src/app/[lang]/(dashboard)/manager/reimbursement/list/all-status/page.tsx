@@ -2,77 +2,49 @@
 import Grid from '@mui/material/Grid2'
 
 // Component Imports
-import { reimbursementService } from '@/app/services/reimbursement.service'
+import { DashboarRdManager } from '@/server/reimbursement'
 import ReimbursementListApproveOrReject from '@/views/reimbursement/list/ApproveOrPending/ReimbursementListApproveOrReject'
 import ProductCard from '@views/reimbursement/list/ProductCard'
+import { reimbursementService } from '@/app/services/reimbursement.service'
 
 
 
 const ReimbursementsRejectedList = async () => {
-  const data = await reimbursementService.getAllReimbustmen()
+  const data = await DashboarRdManager()
+  const dataReimbursement = await reimbursementService.getAllReimbustmen()
 
   console.log({ data })
 
-  const accumulatedData = data.reduce(
-    (acc, item) => {
-      if (item.status === 'PENDING') {
-        acc.pending += item.price;
-      } else if (item.status === 'REJECTED') {
-        acc.rejected += item.price;
-      } else if (item.status === 'APPROVED') {
-        acc.approved += item.price;
-      }
-
-
-      return acc;
-    },
-    { pending: 0, rejected: 0, approved: 0 }
-  );
-
-  const counts = data.reduce(
-    (acc, item) => {
-      if (item.status === 'PENDING') {
-        acc.pending += 1;
-      } else if (item.status === 'REJECTED') {
-        acc.rejected += 1;
-      } else if (item.status === 'APPROVED') {
-        acc.approved += 1;
-      }
-
-
-      return acc;
-    },
-    { pending: 0, approved: 0, rejected: 0 }
-  );
 
   const dataStats = [
     {
       title: 'Total ',
-      value: accumulatedData.approved + accumulatedData.rejected + accumulatedData.pending,
+      value: data.totPriceAll,
       icon: 'tabler-smart-home',
-      desc: counts.approved + counts.rejected + counts.pending,
+      desc: data.countAllReimbustmen,
       change: 5.7
     },
     {
-      title: 'Approved ',
-      value: accumulatedData.approved,
-      icon: 'tabler-device-laptop',
-      desc: counts.approved,
-      change: 12.4
-    },
-    {
       title: 'Pending ',
-      value: accumulatedData.pending,
+      value: data.totPricePending,
       icon: 'tabler-gift',
-      desc: counts.pending
+      desc: data.countPending
     },
     {
       title: 'Rejected ',
-      value: accumulatedData.rejected,
+      value: data.totPriceRejected,
       icon: 'tabler-wallet',
-      desc: counts.rejected,
+      desc: data.countRejected,
       change: -3.5
+    },
+    {
+      title: 'Approved ',
+      value: data.totPriceApproved,
+      icon: 'tabler-device-laptop',
+      desc: data.countApproved,
+      change: 12.4
     }
+
   ]
 
 
@@ -83,7 +55,7 @@ const ReimbursementsRejectedList = async () => {
         <ProductCard data={dataStats} />
       </Grid>
       <Grid size={{ xs: 12 }}>
-        <ReimbursementListApproveOrReject reimbusData={data} />
+        <ReimbursementListApproveOrReject reimbusData={dataReimbursement} />
       </Grid>
     </Grid>
   )

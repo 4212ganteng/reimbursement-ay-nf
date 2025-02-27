@@ -34,6 +34,8 @@ const reimbusStatusObj: reimbusStatusType = {
 }
 
 
+const url = `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/reimbursement-ayu-nur-fadillah/reimbust`
+
 export const ReimbursementColumn = (): ColumnDef<ReimbusTypeWithAction, any>[] => [
   {
     id: 'select',
@@ -61,7 +63,7 @@ export const ReimbursementColumn = (): ColumnDef<ReimbusTypeWithAction, any>[] =
     header: 'Product',
     cell: ({ row }) => (
       <div className='flex items-center gap-4'>
-        <img src={row.original.invoiceImage} width={38} height={38} className='rounded bg-actionHover' />
+        <img src={`${url}/${row.original.id}/${row.original.invoiceImage}`} width={38} height={38} className='rounded bg-actionHover' />
         <div className='flex flex-col'>
           <Typography className='font-medium' color='text.primary'>
             {row.original.user.fullName}

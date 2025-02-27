@@ -27,29 +27,17 @@ const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexChart
 // Vars
 const yearOptions = [new Date().getFullYear() - 1, new Date().getFullYear() - 2, new Date().getFullYear() - 3]
 
-// const barSeries = [
-//   { name: 'Approved', data: [252, 203, 152, 173, 235, 299, 235, 252, 106, 25, 20] },
-//   { name: 'Rejected', data: [-128, -157, -190, -163, -89, -51, -89, -136, -190, 10, 12] }
-// ]
+const barSeries = [
+  { name: 'Earning', data: [252, 203, 152, 173, 235, 299, 235, 252, 106] },
+  { name: 'Expense', data: [-128, -157, -190, -163, -89, -51, -89, -136, -190] }
+]
 
-// const lineSeries = [
-//   { name: 'Approved', data: [20, 10, 30, 16, 24, 5, 30, 23, 28, 50, 30] },
-//   { name: 'Rejected', data: [50, 40, 60, 46, 54, 35, 70, 53, 58, 35, 60] }
-// ]
+const lineSeries = [
+  { name: 'Last Month', data: [20, 10, 30, 16, 24, 5, 30, 23, 28, 5, 30] },
+  { name: 'This Month', data: [50, 40, 60, 46, 54, 35, 70, 53, 58, 35, 60] }
+]
 
-interface Iprops {
-  lineSeries: {
-    name: string,
-    data: number[]
-  }[],
-  totPriceRejected: number,
-  totPriceApproved: number
-
-}
-
-
-
-const RevenueReport = (dataProps: Iprops) => {
+const RevenueReport = () => {
   // States
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -92,9 +80,9 @@ const RevenueReport = (dataProps: Iprops) => {
         horizontal: 9
       },
       markers: {
-        // width: 12,
-        // height: 12,
-        // radius: 10,
+        width: 12,
+        height: 12,
+        radius: 10,
         offsetY: 1,
         offsetX: theme.direction === 'rtl' ? 7 : -4
       }
@@ -130,7 +118,7 @@ const RevenueReport = (dataProps: Iprops) => {
       axisTicks: { show: false },
       crosshairs: { opacity: 0 },
       axisBorder: { show: false },
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nop', 'Dec'],
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
       labels: {
         style: {
           colors: disabledText,
@@ -140,7 +128,6 @@ const RevenueReport = (dataProps: Iprops) => {
       }
     },
     yaxis: {
-      tickAmount: 5,
       labels: {
         offsetX: -14,
         style: {
@@ -252,9 +239,9 @@ const RevenueReport = (dataProps: Iprops) => {
     <Card>
       <Grid container>
         <Grid size={{ xs: 12, sm: 8 }} className='border-r'>
-          <CardHeader title='Monthly Report' />
+          <CardHeader title='Revenue Report' />
           <CardContent>
-            <AppReactApexCharts type='bar' height={320} width='100%' series={dataProps.lineSeries} options={barOptions} />
+            <AppReactApexCharts type='bar' height={319} width='100%' series={barSeries} options={barOptions} />
           </CardContent>
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
@@ -282,13 +269,13 @@ const RevenueReport = (dataProps: Iprops) => {
               ))}
             </Menu>
             <div className='flex flex-col items-center'>
-              <Typography variant='h3'>{dataProps.totPriceApproved}</Typography>
+              <Typography variant='h3'>$25,825</Typography>
               <Typography>
-                <span className='font-medium text-textPrimary'>Rejected: </span>{dataProps.totPriceRejected}
+                <span className='font-medium text-textPrimary'>Budget: </span>56,800
               </Typography>
             </div>
-            <AppReactApexCharts type='line' height={80} width='100%' series={dataProps.lineSeries} options={lineOptions} />
-            <Button variant='contained'>Increase Submission</Button>
+            <AppReactApexCharts type='line' height={80} width='100%' series={lineSeries} options={lineOptions} />
+            <Button variant='contained'>Increase Budget</Button>
           </CardContent>
         </Grid>
       </Grid>
