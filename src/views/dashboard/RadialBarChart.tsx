@@ -13,7 +13,13 @@ import type { ApexOptions } from 'apexcharts'
 // Styled Component Imports
 const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexCharts'))
 
-const RadialBarChart = () => {
+interface Iprops {
+  percent: number,
+  totPrice: number,
+  count: number
+}
+
+const RadialBarChart = (data: Iprops) => {
   // Vars
   const options: ApexOptions = {
     chart: {
@@ -89,11 +95,11 @@ const RadialBarChart = () => {
 
   return (
     <Card>
-      <CardHeader title='82.5k' subheader='Expenses' className='pbe-0' />
+      <CardHeader title={data.totPrice} subheader='Pending' className='pbe-0' />
       <CardContent className='flex flex-col gap-3 items-center'>
-        <AppReactApexCharts type='radialBar' height={148} width='100%' options={options} series={[78]} />
+        <AppReactApexCharts type='radialBar' height={148} width='100%' options={options} series={[data.percent]} />
         <Typography variant='body2' color='text.disabled' className='sm:mbs-2 lg:mbs-0'>
-          $21k Expenses more than last month
+          {data.count} Total Pending Submissions
         </Typography>
       </CardContent>
     </Card>

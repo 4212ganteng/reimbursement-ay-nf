@@ -12,7 +12,7 @@ import { useAtomValue } from 'jotai'
 import { authUser } from '@/jotai/authUser'
 import type { AuthPayload } from '@/libs/server-auth'
 
-const CongratulationsJohn = () => {
+const CongratulationsJohn = ({ totPriceAll }: { totPriceAll: number }) => {
   const user = useAtomValue(authUser) as AuthPayload
 
 
@@ -28,7 +28,7 @@ const CongratulationsJohn = () => {
               Reimursement Tracking App
             </Typography>
             <Typography variant='h4' color='primary.main' className='mbe-1'>
-              $48.9k
+              {totPriceAll}
             </Typography>
             <Button variant='contained' color='primary'>
               View Report

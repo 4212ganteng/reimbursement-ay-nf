@@ -6,6 +6,7 @@ import BarChartRevenueGrowth from '@/views/dashboard/DonutChartGeneratedLeads'
 import LineChartProfit from '@/views/dashboard/LineChartProfit'
 import RadialBarChart from '@/views/dashboard/RadialBarChart'
 import RevenueReport from '@/views/dashboard/RevenueReport'
+import type { DataType } from '@/views/dashboard/StatisticsCard';
 import StatisticsCard from '@/views/dashboard/StatisticsCard'
 import { DashboarRdManager } from '@/server/reimbursement'
 
@@ -19,7 +20,7 @@ const EcommerceDashboard = async () => {
   console.log({ data })
 
 
-  const dataStatisticCard = [
+  const dataStatisticCard: DataType[] = [
     {
       color: 'info',
       stats: data.totUser,
@@ -50,7 +51,7 @@ const EcommerceDashboard = async () => {
   return (
     <Grid container spacing={6}>
       <Grid size={{ xs: 12, md: 4 }}>
-        <CongratulationsJohn />
+        <CongratulationsJohn totPriceAll={data.totPriceAll} />
       </Grid>
       <Grid size={{ xs: 12, md: 8 }}>
         <StatisticsCard data={dataStatisticCard} />
@@ -58,18 +59,18 @@ const EcommerceDashboard = async () => {
       <Grid size={{ xs: 12, xl: 4 }}>
         <Grid container spacing={6}>
           <Grid size={{ xs: 12, sm: 6, md: 3, xl: 6 }}>
-            <LineChartProfit />
+            <LineChartProfit seriesData={data.seriesLine} percentRejected={data.rejectedPercent} totPriceRejected={data.totPriceRejected} />
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 3, xl: 6 }}>
-            <RadialBarChart />
+            <RadialBarChart count={data.countPending} percent={data.pendingPercent} totPrice={data.totPricePending} />
           </Grid>
           <Grid size={{ xs: 12, md: 6, xl: 12 }}>
-            <BarChartRevenueGrowth />
+            <BarChartRevenueGrowth seriesData={[data.countPending, data.countRejected, data.countApproved]} percentApproved={data.approvedPercent} totPriceApproved={data.totPriceApproved} />
           </Grid>
         </Grid>
       </Grid>
       <Grid size={{ xs: 12, xl: 8 }}>
-        <RevenueReport />
+        <RevenueReport lineSeries={data.seriesPerMonth} totPriceApproved={data.totPriceApproved} totPriceRejected={data.totPriceRejected} />
       </Grid>
 
     </Grid>

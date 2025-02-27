@@ -11,7 +11,7 @@ import type { ThemeColor } from '@core/types'
 // Component Imports
 import CustomAvatar from '@core/components/mui/Avatar'
 
-type DataType = {
+export type DataType = {
   icon: string
   stats: number
   title: string
