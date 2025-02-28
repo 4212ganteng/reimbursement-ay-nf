@@ -8,6 +8,7 @@ import type { Role, Status } from '@prisma/client'
 import { z } from 'zod'
 
 import { UserService } from '@/app/services/user.service'
+import { uploadFile } from '@/utils/aws'
 
 const UserSchema = z.object({
   fullName: z.string().min(3),
@@ -15,7 +16,8 @@ const UserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(3),
   role: z.string().min(3),
-  status: z.string().min(3)
+  status: z.string().min(3),
+  avatarUrl: z.instanceof(File)
 })
 
 export async function RegisterUserAction(prevState: unknown, formdata: FormData) {
@@ -29,9 +31,18 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
   const contact = Number(formdata.get('contact'))
 
   console.log('p')
-  console.log(role, status)
+  console.log({ avatarUrl })
 
-  const inputValidation = UserSchema.safeParse({ fullName, username, email, password, role, status, contact })
+  const inputValidation = UserSchema.safeParse({
+    fullName,
+    username,
+    email,
+    password,
+    role,
+    status,
+    contact,
+    avatarUrl
+  })
 
   if (!inputValidation.success) {
     return {
@@ -73,12 +84,33 @@ export async function RegisterUserAction(prevState: unknown, formdata: FormData)
     contact
   })
 
-  if (user) {
-    redirect('/en/apps/user')
-  } else {
+  if (!user) {
     return {
-      status: 'error',
-      message: 'Register Error!'
+      success: false,
+      message: 'Error creating user'
     }
   }
+
+  if (!user.avatarUrl) {
+    console.log('gak upload file harus nya ')
+  }
+
+  // Process file uploads if any
+  const upFile = await uploadFile({
+    key: user.avatarUrl || '/images/avatars/1.png',
+    body: inputValidation.data.avatarUrl,
+    folder: `users/${user.id}`
+  })
+
+  if (!(user && upFile)) {
+    console.log('error cuy')
+
+    return {
+      success: false,
+      message: 'Register Error!',
+      data: 'Unknown error occurred'
+    }
+  }
+
+  redirect('/en/apps/user')
 }

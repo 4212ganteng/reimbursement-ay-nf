@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import type { ChangeEvent } from 'react';
+import { useRef, useState } from 'react'
 
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
@@ -34,6 +35,20 @@ const AddUserDrawer = (props: Props) => {
 
 
   const [fileName, setFileName] = useState('')
+
+  // hooks
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleCreatePreviewName = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return
+
+    const file = event.target.files[0]
+
+    console.log({ file })
+    setFileName(file.name)
+  }
+
+  console.log({ fileName })
 
   const handleReset = () => {
     handleClose()
@@ -153,8 +168,7 @@ const AddUserDrawer = (props: Props) => {
             <CustomTextField
               label='Attachment'
               placeholder='No file chosen'
-
-              // value={fileName}
+              value={fileName}
               className='flex-auto'
               slotProps={{
                 input: {
@@ -169,14 +183,9 @@ const AddUserDrawer = (props: Props) => {
                 }
               }}
             />
-
-
             <Button component='label' variant='tonal' htmlFor='contained-button-file' className='min-is-fit'>
               Choose
-              <input hidden id='contained-button-file' type='file'
-
-              // onChange={handleFileUpload} ref={fileInputRef}
-              />
+              <input hidden id='contained-button-file' type='file' name='avatarUrl' onChange={handleCreatePreviewName} ref={fileInputRef} />
             </Button>
           </div>
 
