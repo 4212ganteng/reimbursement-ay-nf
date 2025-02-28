@@ -1,21 +1,24 @@
 // MUI Imports
-import Grid from '@mui/material/Grid2'
 import Avatar from '@mui/material/Avatar'
-import Chip from '@mui/material/Chip'
+import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid2'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 
 // Type Imports
-import type { ConnectionsTabType } from '@/types/pages/profileTypes'
+
 
 // Component Imports
-import OptionMenu from '@core/components/option-menu'
-import Link from '@components/Link'
-import CustomIconButton from '@core/components/mui/IconButton'
+import type { User } from '@prisma/client'
 
-const Connections = ({ data }: { data?: ConnectionsTabType[] }) => {
+import CustomIconButton from '@core/components/mui/IconButton'
+import OptionMenu from '@core/components/option-menu'
+
+const url = `${process.env.R2_PUBLIC_URL}/reimbursement-ayu-nur-fadillah/reimbust`
+
+
+const Connections = ({ data }: { data?: User[] }) => {
   return (
     <Grid container spacing={6}>
       {data &&
@@ -37,38 +40,19 @@ const Connections = ({ data }: { data?: ConnectionsTabType[] }) => {
                   iconButtonProps={{ className: 'absolute top-6 end-5 text-textDisabled' }}
                 />
                 <CardContent className='flex items-center flex-col gap-6'>
-                  <Avatar src={item.avatar} className='!mbs-5 bs-[100px] is-[100px]' />
+                  <Avatar src={`${url}/${item.id}/${item.avatarUrl}`} className='!mbs-5 bs-[100px] is-[100px]' />
                   <div className='flex flex-col items-center'>
-                    <Typography variant='h5'>{item.name}</Typography>
-                    <Typography>{item.designation}</Typography>
+                    <Typography variant='h5'>{item.fullName}</Typography>
+                    <Typography>{item.role}</Typography>
                   </div>
-                  <div className='flex items-center gap-4'>
-                    {item.chips.map((chip, index) => (
-                      <Link key={index}>
-                        <Chip variant='tonal' label={chip.title} color={chip.color} size='small' />
-                      </Link>
-                    ))}
-                  </div>
-                  <div className='flex is-full items-center justify-around flex-wrap'>
-                    <div className='flex items-center flex-col'>
-                      <Typography variant='h5'>{item.projects}</Typography>
-                      <Typography>Projects</Typography>
-                    </div>
-                    <div className='flex items-center flex-col'>
-                      <Typography variant='h5'>{item.tasks}</Typography>
-                      <Typography>Tasks</Typography>
-                    </div>
-                    <div className='flex items-center flex-col'>
-                      <Typography variant='h5'>{item.connections}</Typography>
-                      <Typography>Connections</Typography>
-                    </div>
-                  </div>
+
+
                   <div className='flex items-center gap-4'>
                     <Button
-                      variant={item.isConnected ? 'contained' : 'tonal'}
-                      startIcon={<i className={item.isConnected ? 'tabler-user-check' : 'tabler-user-plus'} />}
+                      variant='contained'
+                      startIcon={<i className='tabler-phone-call' />}
                     >
-                      {item.isConnected ? 'Connected' : 'Connect'}
+                      Telephone
                     </Button>
                     <CustomIconButton variant='tonal' color='secondary'>
                       <i className='tabler-mail' />

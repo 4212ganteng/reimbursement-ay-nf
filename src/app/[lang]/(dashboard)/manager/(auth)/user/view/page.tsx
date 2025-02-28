@@ -1,51 +1,38 @@
 // React Imports
-import type { ReactElement } from 'react'
 
 // Next Imports
 import dynamic from 'next/dynamic'
 
 // Type Imports
-import type { Data } from '@/types/pages/profileTypes'
+
 
 // Component Imports
+import type { User } from '@prisma/client'
+
+import { UserService } from '@/app/services/user.service'
 import UserProfile from '@views/pages/user-profile'
 
 // Data Imports
-import { getProfileData } from '@/app/server/actions'
+// import { getProfileData } from '@/app/server/actions'
 
 const ProfileTab = dynamic(() => import('@views/pages/user-profile/profile'))
 
 const ConnectionsTab = dynamic(() => import('@views/pages/user-profile/connections'))
 
 // Vars
-const tabContentList = (data?: Data): { [key: string]: ReactElement } => ({
-  profile: <ProfileTab data={data?.users.profile} />,
-  connections: <ConnectionsTab data={data?.users.connections} />
+const tabContentList = (data: User[]) => ({
+  profile: <ProfileTab />,
+  teams: <ConnectionsTab data={data} />
 })
 
-/**
- * ! If you need data using an API call, uncomment the below API code, update the `process.env.API_URL` variable in the
- * ! `.env` file found at root of your project and also update the API endpoints like `/pages/profile` in below example.
- * ! Also, remove the above server action import and the action itself from the `src/app/server/actions.ts` file to clean up unused code
- * ! because we've used the server action for getting our static data.
- */
 
-/* const getProfileData = async () => {
-  // Vars
-  const res = await fetch(`${process.env.API_URL}/pages/profile`)
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch profileData')
-  }
-
-  return res.json()
-} */
 
 const ProfilePage = async () => {
   // Vars
-  const data = await getProfileData()
+  const data = await UserService.getAllUsers()
 
-  return <UserProfile data={data} tabContentList={tabContentList(data)} />
+
+  return <UserProfile tabContentList={tabContentList(data)} />
 }
 
 export default ProfilePage
