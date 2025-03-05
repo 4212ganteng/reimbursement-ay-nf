@@ -1,5 +1,8 @@
 'use client'
 
+import type { ChangeEvent } from 'react';
+import { useRef, useState } from 'react'
+
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
@@ -8,29 +11,11 @@ import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 
 // Component Imports
+import { InputAdornment } from '@mui/material'
+
 import CustomTextField from '@core/components/mui/TextField'
 
-// type TStateUser = {
-//   data: {
-//     fullName?: string | null
-//     username?: string | null
-//     password?: string | null
-//     email?: string | null
-//     role?: string | null
-//     status: string | null
-//     contact?: number | 0
-//   }
-//   errors?: {
-//     fullName?: string[] | null
-//     username?: string[] | null
-//     password?: string[] | null
-//     email?: string[] | null
-//     role?: string[] | null
-//     status?: string[] | null
-//     contact?: string[] | null
-//   }
 
-// } | null
 
 type Props = {
   open: boolean
@@ -47,6 +32,23 @@ const roleOption = ['MANAGER', 'STAFF', 'FINANCE']
 const AddUserDrawer = (props: Props) => {
   // Props
   const { open, handleClose, formAction, state, pending } = props
+
+
+  const [fileName, setFileName] = useState('')
+
+  // hooks
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleCreatePreviewName = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return
+
+    const file = event.target.files[0]
+
+    console.log({ file })
+    setFileName(file.name)
+  }
+
+  console.log({ fileName })
 
   const handleReset = () => {
     handleClose()
@@ -159,8 +161,33 @@ const AddUserDrawer = (props: Props) => {
             placeholder='(397) 294-5153'
             defaultValue={state?.data?.contact}
 
-          // {...(state?.errors?.contact && { error: true, helperText: state?.errors?.contact })}
+
           />
+
+          <div className='flex items-end gap-4'>
+            <CustomTextField
+              label='Attachment'
+              placeholder='No file chosen'
+              value={fileName}
+              className='flex-auto'
+              slotProps={{
+                input: {
+                  readOnly: true,
+                  endAdornment: fileName ? (
+                    <InputAdornment position='end'>
+                      <IconButton size='small' edge='end' onClick={() => setFileName('')}>
+                        <i className='tabler-x' />
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              }}
+            />
+            <Button component='label' variant='tonal' htmlFor='contained-button-file' className='min-is-fit'>
+              Choose
+              <input hidden id='contained-button-file' type='file' name='avatarUrl' onChange={handleCreatePreviewName} ref={fileInputRef} />
+            </Button>
+          </div>
 
           <div className='flex items-center gap-4'>
             <Button variant='contained' type='submit' disabled={pending}>

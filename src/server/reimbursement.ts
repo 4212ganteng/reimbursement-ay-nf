@@ -3,18 +3,33 @@
 import type { Reimbursement } from '@prisma/client'
 
 import { reimbursementService } from '@/app/services/reimbursement.service'
+import { UserService } from '@/app/services/user.service'
 
 export async function DashboarRdManager() {
   const approved = await reimbursementService.getApprovedReimbustmen()
   const pending = await reimbursementService.getPendingReimbustmen()
   const rejected = await reimbursementService.getRejectedReimbustmen()
+  const users = await UserService.getAllUsers()
 
-  const totalReimbustmen = approved.length + pending.length + rejected.length
+  // count by status
+  const countPending = pending.length
+  const countRejected = rejected.length
+  const countApproved = approved.length
+  const countAllReimbustmen = approved.length + pending.length + rejected.length
 
-  console.log({ approved, pending, rejected, totalReimbustmen })
+  // total price
+  const totPricePending = calculateTotPrice(pending)
+  const totPriceRejected = calculateTotPrice(rejected)
+  const totPriceApproved = calculateTotPrice(approved)
+  const totPriceAll = totPricePending + totPriceRejected + totPriceApproved
+
+  // percent
+  const pendingPercent = (countPending / countAllReimbustmen) * 100
+  const approvedPercent = (countApproved / countAllReimbustmen) * 100
+  const rejectedPercent = (countRejected / countAllReimbustmen) * 100
 
   // Fungsi untuk menghasilkan data series berdasarkan price
-  const series = generateSeries(approved, pending, rejected)
+  const seriesLine = [{ data: [countPending, countRejected, countApproved, countAllReimbustmen] }]
 
   // Hitung total approved & rejected per bulan
   const approvedData = groupByMonth(approved)
@@ -30,38 +45,40 @@ export async function DashboarRdManager() {
     approved,
     pending,
     rejected,
-    totalReimbustmen,
-    series,
-    seriesPerMonth
+    countAllReimbustmen,
+    seriesLine,
+    seriesPerMonth,
+    totUser: users.length,
+    pendingPercent,
+    approvedPercent,
+    rejectedPercent,
+    countPending,
+    countRejected,
+    countApproved,
+    totPricePending,
+    totPriceRejected,
+    totPriceApproved
   })
 
   return {
     approved,
     pending,
     rejected,
-    totalReimbustmen,
-    series,
-    seriesPerMonth
+    countAllReimbustmen,
+    seriesLine,
+    seriesPerMonth,
+    totUser: users.length,
+    pendingPercent,
+    approvedPercent,
+    rejectedPercent,
+    countPending,
+    countRejected,
+    countApproved,
+    totPricePending,
+    totPriceRejected,
+    totPriceApproved,
+    totPriceAll
   }
-}
-
-const generateSeries = (approved: Reimbursement[], pending: Reimbursement[], rejected: Reimbursement[]) => {
-  let total = 0
-
-  // Gabungkan semua data dan urutkan berdasarkan tanggal
-  const allData = [...approved, ...pending, ...rejected].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  )
-
-  return [
-    {
-      data: allData.map(item => {
-        total += item.price || 0 // Akumulasi total price
-
-        return total
-      })
-    }
-  ]
 }
 
 // Fungsi untuk mengelompokkan data berdasarkan bulan
@@ -75,4 +92,8 @@ const groupByMonth = (data: Reimbursement[]): number[] => {
   })
 
   return result
+}
+
+const calculateTotPrice = (dataWithStatus: any[]): number => {
+  return dataWithStatus.reduce((acc: number, item: { price: number }) => acc + item.price, 0)
 }

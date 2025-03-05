@@ -19,7 +19,13 @@ const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexChart
 // Vars
 const series = [{ data: [0, 19, 7, 27, 15, 40, 55, 55, 55, 44, 44, 44, 11, 1, 4, 5, 8, 5, 200, 1, 250, 300] }]
 
-const LineChartProfit = () => {
+interface Iprops {
+  seriesData: { data: number[] }[],
+  totPriceRejected: number,
+  percentRejected: number
+}
+
+const LineChartProfit = (dataProps: Iprops) => {
   // Hooks
   const theme = useTheme()
 
@@ -101,15 +107,15 @@ const LineChartProfit = () => {
 
   return (
     <Card>
-      <CardHeader title='Profit' subheader='Last Month' className='pbe-0' />
+      <CardHeader title='Rejected' subheader='Reimbursment data' className='pbe-0' />
       <CardContent className='flex flex-col gap-3 pbs-3'>
-        <AppReactApexCharts type='line' height={68} width='100%' options={options} series={series} />
+        <AppReactApexCharts type='line' height={68} width='100%' options={options} series={dataProps.seriesData} />
         <div className='flex items-center justify-between flex-wrap gap-x-4 gap-y-0.5'>
           <Typography variant='h4' color='text.primary'>
-            624k
+            {dataProps.totPriceRejected}
           </Typography>
           <Typography variant='body2' color='success.main'>
-            +8.2%
+            +{dataProps.percentRejected}%
           </Typography>
         </div>
       </CardContent>

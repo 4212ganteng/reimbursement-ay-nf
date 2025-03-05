@@ -1,6 +1,8 @@
 'use client'
 
 // MUI Imports
+import { useParams } from 'next/navigation'
+
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -9,12 +11,14 @@ import Typography from '@mui/material/Typography'
 
 import { useAtomValue } from 'jotai'
 
+import type { Locale } from '@/configs/i18n'
 import { authUser } from '@/jotai/authUser'
 import type { AuthPayload } from '@/libs/server-auth'
+import { getLocalizedUrl } from '@/utils/i18n'
 
-const CongratulationsJohn = () => {
+const CongratulationsJohn = ({ totPriceAll }: { totPriceAll: number }) => {
   const user = useAtomValue(authUser) as AuthPayload
-
+  const { lang: locale } = useParams()
 
   return (
     <Card>
@@ -28,9 +32,11 @@ const CongratulationsJohn = () => {
               Reimursement Tracking App
             </Typography>
             <Typography variant='h4' color='primary.main' className='mbe-1'>
-              $48.9k
+              {totPriceAll}
             </Typography>
-            <Button variant='contained' color='primary'>
+
+
+            <Button variant='contained' color='primary' href={getLocalizedUrl('/manager/reimbursement/list/all-status', locale as Locale)}>
               View Report
             </Button>
           </CardContent>

@@ -11,42 +11,16 @@ import type { ThemeColor } from '@core/types'
 // Component Imports
 import CustomAvatar from '@core/components/mui/Avatar'
 
-type DataType = {
+export type DataType = {
   icon: string
-  stats: string
+  stats: number
   title: string
   color: ThemeColor
 }
 
-const data: DataType[] = [
-  {
-    color: 'info',
-    stats: '8.549k',
-    title: 'Employee',
-    icon: 'tabler-users'
-  },
-  {
-    stats: '230k',
-    title: 'Pending',
-    color: 'primary',
-    icon: 'tabler-chart-pie-2'
-  },
 
-  {
-    color: 'error',
-    stats: '1.423k',
-    title: 'Rejected',
-    icon: 'tabler-shopping-cart'
-  },
-  {
-    stats: '$9745',
-    color: 'success',
-    title: 'Approved',
-    icon: 'tabler-currency-dollar'
-  }
-]
 
-const StatisticsCard = () => {
+const StatisticsCard = ({ data }: { data: DataType[] }) => {
   return (
     <Card>
       <CardHeader
@@ -66,7 +40,7 @@ const StatisticsCard = () => {
                 <i className={item.icon}></i>
               </CustomAvatar>
               <div className='flex flex-col'>
-                <Typography variant='h5'>{item.stats}</Typography>
+                <Typography variant='h5'>{item.stats} Data</Typography>
                 <Typography variant='body2'>{item.title}</Typography>
               </div>
             </Grid>
