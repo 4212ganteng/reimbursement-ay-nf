@@ -1,35 +1,38 @@
 'use client'
 
 // React Imports
-import { useRef, useState } from 'react'
 import type { MouseEvent } from 'react'
+import { useRef, useState } from 'react'
 
 // Next Imports
 import { useRouter } from 'next/navigation'
 
 // MUI Imports
-import { styled } from '@mui/material/styles'
-import Badge from '@mui/material/Badge'
+
+import Link from 'next/link'
+
 import Avatar from '@mui/material/Avatar'
-import Popper from '@mui/material/Popper'
-import Fade from '@mui/material/Fade'
-import Paper from '@mui/material/Paper'
-import ClickAwayListener from '@mui/material/ClickAwayListener'
-import MenuList from '@mui/material/MenuList'
-import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
-import MenuItem from '@mui/material/MenuItem'
+import Badge from '@mui/material/Badge'
 import Button from '@mui/material/Button'
+import ClickAwayListener from '@mui/material/ClickAwayListener'
+import Divider from '@mui/material/Divider'
+import Fade from '@mui/material/Fade'
+import MenuItem from '@mui/material/MenuItem'
+import MenuList from '@mui/material/MenuList'
+import Paper from '@mui/material/Paper'
+import Popper from '@mui/material/Popper'
+import { styled } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 
 // Hook Imports
 import { useAtom, useAtomValue } from 'jotai'
 
 import { RESET } from 'jotai/utils'
 
-import { useSettings } from '@core/hooks/useSettings'
+import { LogoutAction } from '@/app/[lang]/(blank-layout-pages)/login/action'
 import { authUser } from '@/jotai/authUser'
 import type { AuthPayload } from '@/libs/server-auth'
-import { LogoutAction } from '@/app/[lang]/(blank-layout-pages)/login/action'
+import { useSettings } from '@core/hooks/useSettings'
 
 // Styled component for badge content
 const BadgeContentSpan = styled('span')({
@@ -83,6 +86,9 @@ const UserDropdown = () => {
     // router.push('/login')
   }
 
+
+  const url = `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/reimbursement-ayu-nur-fadillah/reimbust`
+
   return (
     <>
       <Badge
@@ -119,7 +125,7 @@ const UserDropdown = () => {
               <ClickAwayListener onClickAway={e => handleDropdownClose(e as MouseEvent | TouchEvent)}>
                 <MenuList>
                   <div className='flex items-center plb-2 pli-6 gap-2' tabIndex={-1}>
-                    <Avatar alt='John Doe' src={user.avatarUrl ?? '/images/avatars/1.png'} />
+                    <Avatar alt='John Doe' src={user.avatarUrl ? `${url}/${user?.id}/${user?.avatarUrl}` : '/images/avatars/1.png'} />
                     <div className='flex items-start flex-col'>
                       <Typography className='font-medium' color='text.primary'>
                         {user.fullName}
@@ -128,19 +134,31 @@ const UserDropdown = () => {
                     </div>
                   </div>
                   <Divider className='mlb-1' />
-                  <MenuItem className='mli-2 gap-3' onClick={e => handleDropdownClose(e)}>
-                    <i className='tabler-user' />
-                    <Typography color='text.primary'>My Profile</Typography>
-                  </MenuItem>
-                  {/* <MenuItem className='mli-2 gap-3' onClick={e => handleDropdownClose(e)}>
-                    <i className='tabler-settings' />
-                    <Typography color='text.primary'>Settings</Typography>
-                  </MenuItem> */}
 
-                  <MenuItem className='mli-2 gap-3' onClick={e => handleDropdownClose(e)}>
-                    <i className='tabler-help-circle' />
-                    <Typography color='text.primary'>FAQ</Typography>
-                  </MenuItem>
+                  <Link href='/user'>
+                    <MenuItem className='mli-2 gap-3'>
+
+                      <i className='tabler-user' />
+                      <Typography color='text.primary'>My Profile</Typography>
+
+                    </MenuItem>
+                  </Link>
+
+                  <Link href='/about'>
+                    <MenuItem className='mli-2 gap-3' href='/about'>
+                      <i className='tabler-info-circle' />
+                      <Typography color='text.primary'>About</Typography>
+                    </MenuItem>
+                  </Link>
+
+
+                  <Link href='/faq'>
+                    <MenuItem className='mli-2 gap-3' href='/faq'>
+                      <i className='tabler-help-circle' />
+                      <Typography color='text.primary'>FAQ</Typography>
+                    </MenuItem>
+                  </Link>
+
                   <div className='flex items-center plb-2 pli-3'>
                     <Button
                       fullWidth

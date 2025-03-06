@@ -78,7 +78,7 @@ const LoginV2 = ({ mode }: { mode: SystemMode }) => {
 
       router.push('/home')
     }
-  }, [state])
+  }, [router, setData, state])
 
 
 

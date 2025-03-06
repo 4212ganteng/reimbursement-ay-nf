@@ -110,10 +110,11 @@ const CarrierPerformance = () => {
     },
     legend: {
       markers: {
-        width: 8,
-        height: 8,
+        // width: 8,
+        // height: 8,
         offsetX: -3,
-        radius: 12
+
+        // radius: 12
       },
       height: 33,
       offsetY: 10,

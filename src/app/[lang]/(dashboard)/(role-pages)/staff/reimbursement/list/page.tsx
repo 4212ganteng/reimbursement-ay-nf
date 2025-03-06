@@ -7,7 +7,7 @@ import ReimbursementListApproveOrReject from '@/views/reimbursement/list/Approve
 
 
 
-const ReimbursementsRejectedList = async () => {
+const ReimbursementsList = async () => {
   const data = await reimbursementService.getAllReimbustmen()
 
 
@@ -15,7 +15,7 @@ const ReimbursementsRejectedList = async () => {
   return (
     <Grid container spacing={6}>
       {/* <Grid size={{ xs: 12 }}>
-        <ProductCard data={data} />
+        <ProductCard />
       </Grid> */}
       <Grid size={{ xs: 12 }}>
         <ReimbursementListApproveOrReject reimbusData={data} />
@@ -24,4 +24,4 @@ const ReimbursementsRejectedList = async () => {
   )
 }
 
-export default ReimbursementsRejectedList
+export default ReimbursementsList
