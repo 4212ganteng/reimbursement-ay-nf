@@ -46,8 +46,8 @@ const DeliveryExceptions = () => {
       position: 'bottom',
       offsetY: 10,
       markers: {
-        width: 8,
-        height: 8,
+        // width: 8,
+        // height: 8,
         offsetY: 1,
         offsetX: theme.direction === 'rtl' ? 8 : -4
       },

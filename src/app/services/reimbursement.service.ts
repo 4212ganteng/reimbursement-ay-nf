@@ -38,6 +38,27 @@ export const reimbursementService = {
 
     return data
   },
+  getAllReimbustmenByUser: async (id: string) => {
+    const data = await prisma.reimbursement.findMany({
+      where: {
+        userId: id
+      },
+      include: {
+        user: {
+          select: {
+            fullName: true,
+            role: true,
+            contact: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    return data
+  },
 
   getRejectedReimbustmen: async () => {
     const data = await prisma.reimbursement.findMany({
