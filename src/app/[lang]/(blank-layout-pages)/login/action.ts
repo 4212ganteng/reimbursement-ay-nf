@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 
 import { redirect } from 'next/navigation'
 
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
 
