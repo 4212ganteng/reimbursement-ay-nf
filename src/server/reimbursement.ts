@@ -24,9 +24,9 @@ export async function DashboarRdManager() {
   const totPriceAll = totPricePending + totPriceRejected + totPriceApproved
 
   // percent
-  const pendingPercent = Math.round((countPending / countAllReimbustmen) * 100)
-  const approvedPercent = Math.round((countApproved / countAllReimbustmen) * 100)
-  const rejectedPercent = Math.round((countRejected / countAllReimbustmen) * 100)
+  const pendingPercent = Math.round((countPending / countAllReimbustmen) * 100) || 0
+  const approvedPercent = Math.round((countApproved / countAllReimbustmen) * 100) || 0
+  const rejectedPercent = Math.round((countRejected / countAllReimbustmen) * 100) || 0
 
   // Fungsi untuk menghasilkan data series berdasarkan price
   const seriesLine = [{ data: [countPending, countRejected, countApproved, countAllReimbustmen] }]
