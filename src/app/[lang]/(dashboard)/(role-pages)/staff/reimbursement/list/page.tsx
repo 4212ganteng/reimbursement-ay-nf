@@ -1,14 +1,23 @@
 // MUI Imports
+import { redirect } from 'next/navigation'
+
 import Grid from '@mui/material/Grid2'
 
 // Component Imports
 import { reimbursementService } from '@/app/services/reimbursement.service'
 import ReimbursementListApproveOrReject from '@/views/reimbursement/list/ApproveOrPending/ReimbursementListApproveOrReject'
+import serverAuth from '@/libs/server-auth'
 
 
 
 const ReimbursementsList = async () => {
-  const data = await reimbursementService.getAllReimbustmen()
+  const user = await serverAuth()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  const data = await reimbursementService.getAllReimbustmenByUser(user.id)
 
 
 
