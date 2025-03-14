@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation'
 
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 import type { Role, Status } from '@prisma/client'
 import { z } from 'zod'
