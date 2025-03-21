@@ -6,7 +6,6 @@ import { getCoreRowModel, getFacetedMinMaxValues, getFacetedRowModel, getFaceted
 
 import type { User } from '@prisma/client'
 
-import type { Locale } from '@/configs/i18n'
 import { fuzzyFilter } from '@/utils/FuzyFilter'
 import { userColumns } from './UserColumn'
 
@@ -14,13 +13,13 @@ type UsersTypeWithAction = User & {
   action?: string
 }
 
-export const useUserTable = (data: UsersTypeWithAction[], locale: Locale) => {
+export const useUserTable = (data: UsersTypeWithAction[]) => {
   const [rowSelection, setRowSelection] = useState({})
   const [globalFilter, setGlobalFilter] = useState('')
 
   const table = useReactTable({
     data,
-    columns: userColumns(locale),
+    columns: userColumns(),
     filterFns: {
       fuzzy: fuzzyFilter
     },

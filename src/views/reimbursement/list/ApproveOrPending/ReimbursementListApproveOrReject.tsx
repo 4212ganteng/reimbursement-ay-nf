@@ -3,8 +3,6 @@
 // React Imports
 
 // Next Imports
-import Link from 'next/link'
-import { useParams } from 'next/navigation'
 
 // MUI Imports
 import Button from '@mui/material/Button'
@@ -20,27 +18,27 @@ import classnames from 'classnames'
 // Type Imports
 import type { Reimbursement } from '@prisma/client'
 
-import type { Locale } from '@configs/i18n'
 
 // Component Imports
 import TablePaginationComponent from '@components/TablePaginationComponent'
 import CustomTextField from '@core/components/mui/TextField'
 
 // Util Imports
-import { getLocalizedUrl } from '@/utils/i18n'
 
 // Style Imports
 import { DebouncedInput } from '@/utils/DebouncedInput'
 import tableStyles from '@core/styles/table.module.css'
 import { useReimbursementApproveOrReject } from './useReimbursementApproveOrReject'
+import { ExportToExcel } from '@/libs/ExportToExcel'
 
 
-const ReimbursementListApproveOrReject = ({ reimbusData }: { reimbusData?: Reimbursement[] }) => {
+const ReimbursementListApproveOrReject = ({ reimbusData, isReport = false }: { reimbusData: Reimbursement[], isReport?: boolean }) => {
 
 
   // Hooks
-  const { lang: locale } = useParams()
   const { table, globalFilter, setGlobalFilter } = useReimbursementApproveOrReject(reimbusData || [])
+
+  console.log({ reimbusData })
 
   return (
     <>
@@ -66,23 +64,21 @@ const ReimbursementListApproveOrReject = ({ reimbusData }: { reimbusData?: Reimb
               <MenuItem value='25'>25</MenuItem>
               <MenuItem value='50'>50</MenuItem>
             </CustomTextField>
-            <Button
-              color='secondary'
-              variant='tonal'
-              className='max-sm:is-full is-auto'
-              startIcon={<i className='tabler-upload' />}
-            >
-              Export
-            </Button>
-            <Button
-              variant='contained'
-              component={Link}
-              className='max-sm:is-full is-auto'
-              href={getLocalizedUrl('/apps/reimbursement/add', locale as Locale)}
-              startIcon={<i className='tabler-plus' />}
-            >
-              Add Reimbursement
-            </Button>
+            {isReport ? (
+
+              <Button
+                color='secondary'
+                variant='tonal'
+                className='max-sm:is-full is-auto'
+                startIcon={<i className='tabler-upload' />}
+
+                onClick={() => { ExportToExcel(reimbusData) }}
+              >
+                Export
+              </Button>
+            ) : null}
+
+
           </div>
         </div>
         <div className='overflow-x-auto'>

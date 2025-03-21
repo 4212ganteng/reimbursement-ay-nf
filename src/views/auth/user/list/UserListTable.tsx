@@ -3,7 +3,6 @@
 // UserListTable.tsx
 import { useActionState, useEffect, useState } from 'react'
 
-import { useParams } from 'next/navigation'
 
 
 import { Button, Card, CardHeader, MenuItem, TablePagination } from '@mui/material'
@@ -26,7 +25,6 @@ import tableStyles from '@core/styles/table.module.css'
 // import { TableFilters } from './TableFilters'
 import { RegisterUserAction } from '@/app/[lang]/(dashboard)/(role-pages)/manager/(auth)/user/action'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
-import type { Locale } from '@/configs/i18n'
 import { DebouncedInput } from '@/utils/DebouncedInput'
 import AddUserDrawer from './AddUserDrawer'
 import { useUserTable } from './UserTable'
@@ -50,8 +48,7 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filteredData, setFilteredData] = useState(tableData || [])
-  const { lang: locale } = useParams()
-  const { table, globalFilter, setGlobalFilter } = useUserTable(filteredData, locale as Locale)
+  const { table, globalFilter, setGlobalFilter } = useUserTable(filteredData)
 
   console.log(state)
 
@@ -78,14 +75,7 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
               placeholder='Search User'
               className='max-sm:is-full'
             />
-            <Button
-              color='secondary'
-              variant='tonal'
-              startIcon={<i className='tabler-upload' />}
-              className='max-sm:is-full'
-            >
-              Export
-            </Button>
+
             <Button
               variant='contained'
               startIcon={<i className='tabler-plus' />}

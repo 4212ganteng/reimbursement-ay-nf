@@ -55,7 +55,7 @@ const ReimbursementsRejectedList = async () => {
         <ProductCard data={dataStats} />
       </Grid>
       <Grid size={{ xs: 12 }}>
-        <ReimbursementListApproveOrReject reimbusData={dataReimbursement} />
+        <ReimbursementListApproveOrReject reimbusData={dataReimbursement} isReport={true} />
       </Grid>
     </Grid>
   )
