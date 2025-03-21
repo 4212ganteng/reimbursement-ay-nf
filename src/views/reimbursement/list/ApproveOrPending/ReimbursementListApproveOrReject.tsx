@@ -67,8 +67,7 @@ const ReimbursementListApproveOrReject = ({ reimbusData, isReport = false }: { r
             {isReport ? (
 
               <Button
-                color='secondary'
-                variant='tonal'
+                variant='contained'
                 className='max-sm:is-full is-auto'
                 startIcon={<i className='tabler-upload' />}
 
@@ -76,6 +75,8 @@ const ReimbursementListApproveOrReject = ({ reimbusData, isReport = false }: { r
               >
                 Export
               </Button>
+
+
             ) : null}
 
 
