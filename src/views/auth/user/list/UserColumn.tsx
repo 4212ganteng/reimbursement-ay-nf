@@ -1,25 +1,21 @@
 // UserColumns.tsx
-import Link from 'next/link'
 
-import { createColumnHelper, type ColumnDef } from '@tanstack/react-table'
+import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 
-import { Checkbox, Chip, IconButton, Typography } from '@mui/material'
+import { Checkbox, Chip, Typography } from '@mui/material';
 
-import type { User } from '@prisma/client'
+import type { User } from '@prisma/client';
 
 import type { OverridableStringUnion } from '@mui/types';
 
 import type { ChipPropsColorOverrides } from '@mui/material/Chip';
 
-import type { Locale } from '@configs/i18n'
 
 
-import { getLocalizedUrl } from '@/utils/i18n'
 
 
-import { getInitials } from '@/utils/getInitials'
-import CustomAvatar from '@core/components/mui/Avatar'
-import OptionMenu from '@core/components/option-menu'
+import { getInitials } from '@/utils/getInitials';
+import CustomAvatar from '@core/components/mui/Avatar';
 
 
 const columnHelper = createColumnHelper<UsersTypeWithAction>()
@@ -55,7 +51,7 @@ const getAvatar = (params: { avatar?: string; fullName: string }) => {
   }
 }
 
-export const userColumns = (locale: Locale): ColumnDef<UsersTypeWithAction, any>[] => [
+export const userColumns = (): ColumnDef<UsersTypeWithAction, any>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -134,36 +130,5 @@ export const userColumns = (locale: Locale): ColumnDef<UsersTypeWithAction, any>
       </div>
     )
   }),
-  columnHelper.accessor('action', {
-    header: 'Action',
-    cell: ({ row }) => (
-      <div className='flex items-center'>
-        <IconButton onClick={() => console.log('Delete user', row.original.id)}>
-          <i className='tabler-trash text-textSecondary' />
-        </IconButton>
-        <IconButton>
-          <Link href={getLocalizedUrl('/apps/user/view', locale)} className='flex'>
-            <i className='tabler-eye text-textSecondary' />
-          </Link>
-        </IconButton>
-        <OptionMenu
-          iconButtonProps={{ size: 'medium' }}
-          iconClassName='text-textSecondary'
-          options={[
-            {
-              text: 'Download',
-              icon: 'tabler-download',
-              menuItemProps: { className: 'flex items-center gap-2 text-textSecondary' }
-            },
-            {
-              text: 'Edit',
-              icon: 'tabler-edit',
-              menuItemProps: { className: 'flex items-center gap-2 text-textSecondary' }
-            }
-          ]}
-        />
-      </div>
-    ),
-    enableSorting: false
-  })
+
 ]
